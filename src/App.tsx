@@ -114,11 +114,42 @@ const MythicSection = () => {
   )
 }
 
+const RareSection = () => {
+  return (
+    <section className="relative h-screen w-full bg-[url('/images/rare_bg.webp')] bbg-no-repeat bg-[length:auto_100%] bg-left lg:bg-[length:204%]">
+      {/* Background gradients */}
+      <div className="absolute inset-0 z-10 bg-[radial-gradient(circle_at_center,_rgba(0,0,0,0.7)_0%,_rgba(0,0,0,0)_70%)]" />
+
+      <div className="absolute inset-0 z-10 bg-[radial-gradient(circle_at_center,_rgba(0,0,0,0.35)_0%,_rgba(0,0,0,0.175)_70%,_rgba(0,0,0,0)_80%)]" />
+
+      {/* Mythic content */}
+      <div className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 z-20 flex items-end w-[70%] flex-col">
+        <h1 className="text-title max-w-[470px]">SMAUG THE MAGNIFICENT</h1>
+
+        <p className="text-body mt-[22px] max-w-[470px]">
+          Beneath the Lonely Mountain lies more than gold. From the depths of
+          your journey emerges Smaug the Magnificent—the fearsome Dragon whose
+          hoard is matched only by his hunger for conquest. Draw near, if you
+          dare, and claim a legend worthy of any adventurer’s collection.
+        </p>
+
+        <p className="text-explanation text-[1rem] mt-[22px] max-w-[470px]">
+          Beneath the Lonely Mountain lies more than gold. From the depths of
+          your journey emerges Smaug the Magnificent—the fearsome Dragon whose
+          hoard is matched only by his hunger for conquest. Draw near, if you
+          dare, and claim a legend worthy of any adventurer’s collection.
+        </p>
+      </div>
+    </section>
+  )
+}
+
 export default function App() {
   return (
     <main className="app">
       <Hero />
       <MythicSection />
+      <RareSection />
     </main>
   )
 }
