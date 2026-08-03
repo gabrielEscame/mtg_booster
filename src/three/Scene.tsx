@@ -28,7 +28,6 @@ const Scene = () => {
     }
   }, [])
 
-  console.log('Scroll Progress:', scrollProgress)
   return (
     <div className="fixed inset-0 z-20">
       <Canvas
