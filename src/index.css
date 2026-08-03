@@ -1,4 +1,26 @@
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Alegreya+SC:wght@400;500;600;700;800;900&family=Open+Sans:wght@400;500;600;700&display=swap');
+@import 'tailwindcss';
+
+@theme {
+  --font-heading: "Alegreya SC", serif;
+  --font-body: "Open Sans", sans-serif;
+  --color-title: #FFF6DC;
+  --color-body: #FFF;
+  --color-caption: #F7E5AE;
+}
+
+@layer base {
+  h1 {
+    font-family: var(--font-heading);
+    font-size: 3rem;
+    font-weight: 700;
+  }
+
+  p {
+    font-family: var(--font-body);
+    font-size: 1.2rem;
+  }
+}
 
 * {
   box-sizing: border-box;
