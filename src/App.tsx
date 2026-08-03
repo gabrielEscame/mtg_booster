@@ -36,7 +36,7 @@ const Hero = () => {
       {/* Background gradients */}
       <div className="absolute inset-0 z-10 bg-[radial-gradient(circle_at_center,_rgba(102,102,102,0)_0%,_rgba(0,0,0,0.7)_70%)]" />
 
-      <div className="absolute inset-0 z-10 opacity-80 bg-[linear-gradient(to_top,_rgba(0,0,0,1)_0%,_rgba(102,102,102,0)_25%)]" />
+      <div className="absolute inset-0 z-10 bg-[linear-gradient(to_top,_rgba(0,0,0,1)_0%,_rgba(102,102,102,0)_35%)]" />
 
       {/* 3D scene */}
       <div className="absolute inset-0 z-20">
@@ -90,11 +90,14 @@ const MythicSection = () => {
       {/* Background gradients */}
       <div className="absolute inset-0 z-10 opacity-80 bg-[radial-gradient(circle_at_center,_rgba(102,102,102,0)_0%,_rgba(0,0,0,0.7)_70%)]" />
 
-      <div className="absolute inset-0 z-10 opacity-80 bg-[linear-gradient(to_bottom,_rgba(0,0,0,1)_0%,_rgba(102,102,102,0)_50%)]" />
+      <div className="absolute inset-0 z-10 bg-[linear-gradient(to_bottom,_rgba(0,0,0,1)_0%,_rgba(102,102,102,0)_50%)]" />
 
       {/* Mythic content */}
       <div className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 z-20 flex w-[70%] flex-col justify-center">
-        <h1 className="text-title max-w-[470px]">SMAUG THE MAGNIFICENT</h1>
+        <h1 className="text-title max-w-[470px]">
+          SMAUG <br />
+          THE MAGNIFICENT
+        </h1>
 
         <p className="text-body mt-[22px] max-w-[470px]">
           Beneath the Lonely Mountain lies more than gold. From the depths of
@@ -116,30 +119,56 @@ const MythicSection = () => {
 
 const RareSection = () => {
   return (
-    <section className="relative h-screen w-full bg-[url('/images/rare_bg.webp')] bbg-no-repeat bg-[length:auto_100%] bg-left lg:bg-[length:204%]">
+    <section className="relative h-screen w-full bg-[url('/images/rare_bg.webp')] bg-no-repeat bg-[length:auto_100%] bg-left lg:bg-[length:205%]">
       {/* Background gradients */}
       <div className="absolute inset-0 z-10 bg-[radial-gradient(circle_at_center,_rgba(0,0,0,0.7)_0%,_rgba(0,0,0,0)_70%)]" />
 
-      <div className="absolute inset-0 z-10 bg-[radial-gradient(circle_at_center,_rgba(0,0,0,0.35)_0%,_rgba(0,0,0,0.175)_70%,_rgba(0,0,0,0)_80%)]" />
-
       {/* Mythic content */}
-      <div className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 z-20 flex items-end w-[70%] flex-col">
-        <h1 className="text-title max-w-[470px]">SMAUG THE MAGNIFICENT</h1>
+      <div className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 z-20 flex flex-col items-end w-[70%]">
+        <div className="w-content flex flex-col justify-center">
+          <h1 className="text-title max-w-[470px]">
+            RADAGAST <br /> OF RHOSGOBEL
+          </h1>
 
-        <p className="text-body mt-[22px] max-w-[470px]">
-          Beneath the Lonely Mountain lies more than gold. From the depths of
-          your journey emerges Smaug the Magnificent—the fearsome Dragon whose
-          hoard is matched only by his hunger for conquest. Draw near, if you
-          dare, and claim a legend worthy of any adventurer’s collection.
-        </p>
+          <p className="text-body mt-[22px] max-w-[470px]">
+            No road through Middle-earth is meant to be traveled alone. From the
+            wild paths of Rhosgobel comes Radagast, a steadfast friend whose
+            wisdom calls new companions to your side when the journey needs them
+            most. With every ally who answers the call, even the darkest road
+            becomes one worth traveling.
+          </p>
 
-        <p className="text-explanation text-[1rem] mt-[22px] max-w-[470px]">
-          Beneath the Lonely Mountain lies more than gold. From the depths of
-          your journey emerges Smaug the Magnificent—the fearsome Dragon whose
-          hoard is matched only by his hunger for conquest. Draw near, if you
-          dare, and claim a legend worthy of any adventurer’s collection.
-        </p>
+          <p className="text-explanation text-[1rem] mt-[22px] max-w-[470px]">
+            RARE — A remarkable companion, waiting beyond the common paths of a
+            Play Booster. Rare cards appear in the booster’s rare-or-mythic
+            slot, making every pack a chance to discover a powerful new ally for
+            the adventures ahead.
+          </p>
+        </div>
       </div>
+    </section>
+  )
+}
+
+const CardsSection = () => {
+  return (
+    <section className="relative h-screen w-full pb-[67px] pt-[67px] flex flex-col items-center bg-[linear-gradient(to_top,var(--color-dark-green),var(--color-light-green))]">
+      <h1 className="text-title text-center w-[82%] max-w-[940px]">
+        EVERY JOURNEY IS SHAPED BY THOSE WHO WALK BESIDE YOU
+      </h1>
+      <p className="text-body mt-[22px] text-center w-[90%] max-w-[1046px]">
+        Beyond the rarest treasures lie the companions, creatures, places, and
+        unexpected discoveries that bring every adventure to life. From quiet
+        paths through the Shire to the shadows beneath the Lonely Mountain,
+        every card carries a piece of the story—and every new discovery brings
+        the company closer to its destination. Gather your allies, uncover the
+        tales hidden within each card, and see where the road leads when the
+        entire pack is finally revealed.
+      </p>
+
+      <p className="absolute bottom-[32px] left-1/2 -translate-x-1/2 text-explanation text-[1rem]">
+        Images are digital renderings, not actual cards.
+      </p>
     </section>
   )
 }
@@ -150,6 +179,7 @@ export default function App() {
       <Hero />
       <MythicSection />
       <RareSection />
+      <CardsSection />
     </main>
   )
 }

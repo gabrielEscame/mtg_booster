@@ -8,6 +8,8 @@
   --color-body: #FFF;
   --color-caption: #F7E5AE;
   --color-explanation: #858585;
+  --color-light-green: #235125;
+  --color-dark-green: #132A19;
 }
 
 @layer base {
