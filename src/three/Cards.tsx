@@ -9,7 +9,7 @@ const CardsStack = () => {
   const cardSpacing = 0.0005
   const stackStart = 0.001
 
-  const cardOffsets = [
+  const CARDS_OFFSETS = [
     {
       x: -0.00022043,
       y: -0.00001296,
@@ -74,7 +74,7 @@ const CardsStack = () => {
 
   return (
     <group>
-      {cardOffsets.map((offset, index) => (
+      {CARDS_OFFSETS.map((offset, index) => (
         <primitive
           key={index}
           object={cardScene.clone()}
@@ -90,7 +90,9 @@ const CardsStack = () => {
 const Cards = () => {
   const { scene: mythicCard } = useGLTF('/models/mythic_card.glb')
   const { scene: rareCard } = useGLTF('/models/rare_card.glb')
-  const mouseRef = useRef<THREE.Group | null>(null)
+  const cardsMouseRef = useRef<THREE.Group | null>(null)
+  const mythicCardRef = useRef<THREE.Group | null>(null)
+  const rareCardRef = useRef<THREE.Group | null>(null)
 
   const updateMouseAnimation = ({
     ref,
@@ -112,15 +114,22 @@ const Cards = () => {
   }
 
   useFrame(({ pointer }) => {
-    if (!mouseRef.current) return
+    if (!cardsMouseRef.current) return
 
     // Mouse interaction for rotation
-    updateMouseAnimation({ ref: mouseRef, pointer })
+    updateMouseAnimation({ ref: cardsMouseRef, pointer })
   })
+  
   return (
-    <group ref={mouseRef} position={[0, 0, 0]}>
-      <primitive object={mythicCard} scale={1} />
-      <primitive object={rareCard} scale={1} position={[0, 0, -0.0005]} />
+    <group ref={cardsMouseRef} position={[0, 0, 0]}>
+      <group ref={mythicCardRef}>
+        <primitive object={mythicCard} scale={1} />
+      </group>
+
+      <group ref={rareCardRef}>
+        <primitive object={rareCard} scale={1} position={[0, 0, -0.0005]} />
+      </group>
+
       <CardsStack />
     </group>
   )
