@@ -48,19 +48,19 @@ function Booster({ progress }: { progress: number }) {
     const elapsedTime = clock.getElapsedTime()
 
     const idleXTranslationAmplitude = 0.0015
-    const idleXTranslationSpeed = 3
+    const idleXTranslationSpeed = 4
 
     idleRef.current.position.y =
       Math.sin(elapsedTime * idleXTranslationSpeed) * idleXTranslationAmplitude
 
-    const idleXRotationAmplitude = 0.0015
-    const idleXRotationSpeed = 3
+    const idleXRotationAmplitude = 0.02
+    const idleXRotationSpeed = 0.8
 
     idleRef.current.rotation.x =
       Math.sin(elapsedTime * idleXRotationSpeed) * idleXRotationAmplitude
 
-    const idleZRotationAmplitude = 0.0015
-    const idleZRotationSpeed = 3
+    const idleZRotationAmplitude = 0.06
+    const idleZRotationSpeed = 0.8
 
     idleRef.current.rotation.z =
       Math.sin(elapsedTime * idleZRotationSpeed) * idleZRotationAmplitude
@@ -111,7 +111,7 @@ function Booster({ progress }: { progress: number }) {
 
     animationRef.current.rotation.z = THREE.MathUtils.lerp(
       animationRef.current.rotation.z,
-      targetBaseRotation,
+      targetBaseRotation * 4,
       0.05
     )
 
