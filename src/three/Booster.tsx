@@ -5,9 +5,9 @@ import * as THREE from 'three'
 
 function Booster({ progress }: { progress: number }) {
   const { scene } = useGLTF('/models/booster.glb')
-  const animationRef = useRef<THREE.Group>(null)
-  const mouseRef = useRef<THREE.Group>(null)
-  const idleRef = useRef<THREE.Group>(null)
+  const animationRef = useRef<THREE.Group | null>(null)
+  const mouseRef = useRef<THREE.Group | null>(null)
+  const idleRef = useRef<THREE.Group | null>(null)
 
   useEffect(() => {
     scene.traverse((object) => {
@@ -23,44 +23,70 @@ function Booster({ progress }: { progress: number }) {
     })
   }, [scene])
 
-  useFrame(({ pointer, clock }) => {
-    if (!animationRef.current || !mouseRef.current || !idleRef.current) return
+  const updateMouseAnimation = ({
+    ref,
+    pointer
+  }: {
+    ref: React.RefObject<THREE.Group | null>
+    pointer: THREE.Vector2
+  }) => {
+    const node = ref.current
+    if (!node) return
 
-    // Mouse interaction for rotation
-    mouseRef.current.rotation.y = THREE.MathUtils.lerp(
-      mouseRef.current.rotation.y,
-      pointer.x * 0.15,
+    node.rotation.y = THREE.MathUtils.lerp(
+      node.rotation.y,
+      pointer.x * 0.6,
       0.05
     )
 
-    mouseRef.current.rotation.x = THREE.MathUtils.lerp(
-      mouseRef.current.rotation.x,
+    node.rotation.x = THREE.MathUtils.lerp(
+      node.rotation.x,
       -pointer.y * 0.1,
       0.05
     )
+  }
 
-    // Idle animation
+  const updateIdleAnimaation = ({
+    ref,
+    clock
+  }: {
+    ref: React.RefObject<THREE.Group | null>
+    clock: THREE.Clock
+  }) => {
+    const node = ref.current
+    if (!node) return
+
     const elapsedTime = clock.getElapsedTime()
 
     const idleXTranslationAmplitude = 0.0015
     const idleXTranslationSpeed = 4
 
-    idleRef.current.position.y =
+    node.position.y =
       Math.sin(elapsedTime * idleXTranslationSpeed) * idleXTranslationAmplitude
 
-    const idleXRotationAmplitude = 0.02
+    const idleXRotationAmplitude = 0.06
     const idleXRotationSpeed = 0.8
 
-    idleRef.current.rotation.x =
+    node.rotation.x =
       Math.sin(elapsedTime * idleXRotationSpeed) * idleXRotationAmplitude
 
     const idleZRotationAmplitude = 0.06
     const idleZRotationSpeed = 0.8
 
-    idleRef.current.rotation.z =
+    node.rotation.z =
       Math.sin(elapsedTime * idleZRotationSpeed) * idleZRotationAmplitude
+  }
 
-    // Scroll animation based on progress
+  const updateScrollAnimation = ({
+    ref,
+    progress
+  }: {
+    ref: React.RefObject<THREE.Group | null>
+    progress: number
+  }) => {
+    const node = ref.current
+    if (!node) return
+
     const startRiseAnimation = 0
     const endRiseAnimation = 0.01
 
@@ -75,7 +101,7 @@ function Booster({ progress }: { progress: number }) {
     const startFallAnimation = 0.04
     const endFallAnimation = 0.2
 
-    const fallDistance = 0.2
+    const fallDistance = 0.3
 
     const fallProgress = THREE.MathUtils.clamp(
       (progress - startFallAnimation) / (endFallAnimation - startFallAnimation),
@@ -85,13 +111,9 @@ function Booster({ progress }: { progress: number }) {
 
     const targetY = riseProgress * riseDistance - fallProgress * fallDistance
 
-    animationRef.current.position.y = THREE.MathUtils.lerp(
-      animationRef.current.position.y,
-      targetY,
-      0.05
-    )
+    node.position.y = THREE.MathUtils.lerp(node.position.y, targetY, 0.05)
 
-    const startRotationAnimation = 0.08
+    const startRotationAnimation = 0.04
     const endRotationAnimation = 0.3
 
     const rotationProgress = THREE.MathUtils.clamp(
@@ -104,20 +126,20 @@ function Booster({ progress }: { progress: number }) {
     const fallRotation = Math.PI
     const targetBaseRotation = rotationProgress * fallRotation
 
-    animationRef.current.rotation.z = THREE.MathUtils.lerp(
-      animationRef.current.rotation.z,
-      targetBaseRotation * 4,
+    node.rotation.z = THREE.MathUtils.lerp(
+      node.rotation.z,
+      -(targetBaseRotation * 2),
       0.05
     )
 
-    animationRef.current.rotation.x = THREE.MathUtils.lerp(
-      animationRef.current.rotation.x,
-      targetBaseRotation * 4,
+    node.rotation.x = THREE.MathUtils.lerp(
+      node.rotation.x,
+      targetBaseRotation * 8,
       0.05
     )
 
     const startFadeAnimation = 0.06
-    const endFadeAnimation = 0.1405
+    const endFadeAnimation = 0.092
 
     const fadeProgress = THREE.MathUtils.clamp(
       (progress - startFadeAnimation) / (endFadeAnimation - startFadeAnimation),
@@ -138,6 +160,19 @@ function Booster({ progress }: { progress: number }) {
         material.opacity = targetOpacity
       })
     })
+  }
+
+  useFrame(({ pointer, clock }) => {
+    if (!animationRef.current || !mouseRef.current || !idleRef.current) return
+
+    // Mouse interaction for rotation
+    updateMouseAnimation({ ref: mouseRef, pointer })
+
+    // Idle animation
+    updateIdleAnimaation({ ref: idleRef, clock })
+
+    // Scroll animation based on progress
+    updateScrollAnimation({ ref: animationRef, progress })
   })
 
   return (
