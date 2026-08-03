@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import * as THREE from 'three'
 
 import Booster from './Booster'
+import Cards from './Cards'
 
 const Scene = () => {
   const [scrollProgress, setScrollProgress] = useState(0)
@@ -41,6 +42,8 @@ const Scene = () => {
         <directionalLight position={[3, 4, 5]} intensity={0.5} />
 
         <Booster progress={scrollProgress} />
+
+        <Cards />
 
         <Environment preset="studio" environmentIntensity={0.4} />
       </Canvas>
