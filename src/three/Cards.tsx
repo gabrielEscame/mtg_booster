@@ -83,6 +83,7 @@ const Cards = ({ progress }: CardsProps) => {
     const endApproachAnimation = 0.3
 
     const approachDistance = viewport.width * 0.35
+    const approachRotation = Math.PI
 
     const approachProgress = THREE.MathUtils.clamp(
       (progress - startApproachAnimation) /
@@ -92,6 +93,15 @@ const Cards = ({ progress }: CardsProps) => {
     )
 
     const easeInApproachProgress = approachProgress ** 5
+
+    // Z rotation
+    const targerZRotatiton = easeInApproachProgress * approachRotation
+
+    node.rotation.y = THREE.MathUtils.lerp(
+      node.rotation.y,
+      -(targerZRotatiton * 2),
+      0.04
+    )
 
     // Z movement
     const targetZ = easeInApproachProgress * approachDistance
