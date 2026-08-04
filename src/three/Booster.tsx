@@ -38,7 +38,7 @@ function Booster({ progress }: { progress: number }) {
     const startRiseAnimation = 0
     const endRiseAnimation = 0.01
 
-    const riseDistance = 0.04
+    const riseDistance = 0.02
 
     const riseProgress = THREE.MathUtils.clamp(
       (progress - startRiseAnimation) / (endRiseAnimation - startRiseAnimation),
@@ -61,7 +61,7 @@ function Booster({ progress }: { progress: number }) {
 
     node.position.y = THREE.MathUtils.lerp(node.position.y, targetY, 0.05)
 
-    const startRotationAnimation = 0.04
+    const startRotationAnimation = 0.06
     const endRotationAnimation = 0.3
 
     const rotationProgress = THREE.MathUtils.clamp(
