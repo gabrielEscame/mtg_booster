@@ -50,4 +50,25 @@ const updateMouseAnimation = ({
   )
 }
 
-export { updateIdleAnimaation, updateMouseAnimation }
+const updateOpacity = ({
+  object,
+  opacity
+}: {
+  object: THREE.Object3D
+  opacity: number
+}) => {
+  object.traverse((child) => {
+    if (!(child instanceof THREE.Mesh)) return
+
+    const materials = Array.isArray(child.material)
+      ? child.material
+      : [child.material]
+
+    materials.forEach((material) => {
+      material.transparent = true
+      material.opacity = opacity
+    })
+  })
+}
+
+export { updateIdleAnimaation, updateMouseAnimation, updateOpacity }

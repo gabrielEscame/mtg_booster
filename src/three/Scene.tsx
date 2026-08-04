@@ -42,7 +42,7 @@ const Scene = () => {
 
         <Booster progress={scrollProgress} />
 
-        <Cards />
+        <Cards progress={scrollProgress} />
 
         <Environment preset="studio" environmentIntensity={0.4} />
       </Canvas>

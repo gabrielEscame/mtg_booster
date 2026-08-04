@@ -113,11 +113,11 @@ function Booster({ progress }: { progress: number }) {
   useFrame(({ pointer, clock }) => {
     if (!animationRef.current || !mouseRef.current || !idleRef.current) return
 
-    // Mouse interaction for rotation
-    updateMouseAnimation({ ref: mouseRef, pointer })
+    // // Mouse interaction for rotation
+    // updateMouseAnimation({ ref: mouseRef, pointer })
 
-    // Idle animation
-    updateIdleAnimaation({ ref: idleRef, clock })
+    // // Idle animation
+    // updateIdleAnimaation({ ref: idleRef, clock })
 
     // Scroll animation based on progress
     updateScrollAnimation({ ref: animationRef, progress })
