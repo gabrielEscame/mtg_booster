@@ -39,8 +39,9 @@ function Booster({ progress }: { progress: number }) {
     const node = ref.current
     if (!node) return
 
+    console.log({ progress })
     const startRiseAnimation = 0
-    const endRiseAnimation = 0.01
+    const endRiseAnimation = 0.1
 
     const riseDistance = 0.04
 
@@ -50,10 +51,10 @@ function Booster({ progress }: { progress: number }) {
       1
     )
 
-    const startFallAnimation = 0.04
+    const startFallAnimation = 0.15
     const endFallAnimation = 0.2
 
-    const fallDistance = 0.4
+    const fallDistance = 0.2
 
     const fallProgress = THREE.MathUtils.clamp(
       (progress - startFallAnimation) / (endFallAnimation - startFallAnimation),
@@ -68,7 +69,7 @@ function Booster({ progress }: { progress: number }) {
 
     node.position.y = THREE.MathUtils.lerp(node.position.y, targetY, 0.04)
 
-    const startRotationAnimation = 0.07
+    const startRotationAnimation = 0.18
     const endRotationAnimation = 0.4
 
     const rotationProgress = THREE.MathUtils.clamp(
@@ -95,8 +96,8 @@ function Booster({ progress }: { progress: number }) {
       0.04
     )
 
-    const startFadeAnimation = 0.04
-    const endFadeAnimation = 0.092
+    const startFadeAnimation = 0.16
+    const endFadeAnimation = 0.2
 
     const fadeProgress = THREE.MathUtils.clamp(
       (progress - startFadeAnimation) / (endFadeAnimation - startFadeAnimation),

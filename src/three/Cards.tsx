@@ -3,10 +3,7 @@ import { useRef } from 'react'
 import { useFrame, type Viewport } from '@react-three/fiber'
 import * as THREE from 'three'
 
-import {
-  updateIdleAnimaation,
-  updateMouseAnimation,
-} from './utils'
+import { updateIdleAnimaation, updateMouseAnimation } from './utils'
 
 import Stack from './Stack'
 
@@ -42,7 +39,7 @@ const Cards = ({ progress }: CardsProps) => {
 
     if (!node) return
 
-    const showCards = 0.05
+    const showCards = 0.16
 
     const isVisible = progress >= showCards
 
@@ -50,8 +47,8 @@ const Cards = ({ progress }: CardsProps) => {
     rareCard.visible = isVisible
     stackCard.visible = isVisible
 
-    const starRiseAnimation = 0.02
-    const endRiseAnimation = 0.06
+    const starRiseAnimation = 0.13
+    const endRiseAnimation = 0.17
 
     const riseDistance = 0.06
 
@@ -63,8 +60,8 @@ const Cards = ({ progress }: CardsProps) => {
 
     const easeInRiseProgress = riseProgress ** 3
 
-    const startFallAnimation = 0.06
-    const endFallAnimation = 0.12
+    const startFallAnimation = 0.17
+    const endFallAnimation = 0.23
 
     const fallDistance = 0.06
 
