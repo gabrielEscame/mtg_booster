@@ -46,8 +46,8 @@ const Cards = ({ progress }: CardsProps) => {
     rareCard.visible = isVisible
     stackCard.visible = isVisible
 
-    const starRiseAnimation = 0.06
-    const endRiseAnimation = 0.07
+    const starRiseAnimation = 0.02
+    const endRiseAnimation = 0.06
 
     const riseDistance = 0.06
 
@@ -56,6 +56,8 @@ const Cards = ({ progress }: CardsProps) => {
       0,
       1
     )
+
+    const easeInRiseProgress = riseProgress ** 3
 
     const startFallAnimation = 0.055
     const endFallAnimation = 0.2
@@ -68,7 +70,7 @@ const Cards = ({ progress }: CardsProps) => {
       1
     )
 
-    const targetY = riseProgress * riseDistance
+    const targetY = easeInRiseProgress * riseDistance
 
     node.position.y = THREE.MathUtils.lerp(node.position.y, targetY, 0.05)
   }

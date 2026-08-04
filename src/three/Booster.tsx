@@ -57,9 +57,12 @@ function Booster({ progress }: { progress: number }) {
       1
     )
 
-    const targetY = riseProgress * riseDistance - fallProgress * fallDistance
+    const easeInFallProgress = fallProgress ** 1.08
 
-    node.position.y = THREE.MathUtils.lerp(node.position.y, targetY, 0.05)
+    const targetY =
+      riseProgress * riseDistance - easeInFallProgress * fallDistance
+
+    node.position.y = THREE.MathUtils.lerp(node.position.y, targetY, 0.04)
 
     const startRotationAnimation = 0.07
     const endRotationAnimation = 0.4
@@ -71,19 +74,21 @@ function Booster({ progress }: { progress: number }) {
       1
     )
 
+    const easeInRotationProgress = rotationProgress ** 1.1
+
     const fallRotation = Math.PI
-    const targetBaseRotation = rotationProgress * fallRotation
+    const targetBaseRotation = easeInRotationProgress * fallRotation
 
     node.rotation.z = THREE.MathUtils.lerp(
       node.rotation.z,
       -(targetBaseRotation * 2),
-      0.05
+      0.04
     )
 
     node.rotation.x = THREE.MathUtils.lerp(
       node.rotation.x,
       targetBaseRotation * 4,
-      0.05
+      0.04
     )
 
     const startFadeAnimation = 0.04
