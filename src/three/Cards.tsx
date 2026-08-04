@@ -1,6 +1,6 @@
 import { useGLTF } from '@react-three/drei'
 import { useRef } from 'react'
-import { useFrame } from '@react-three/fiber'
+import { useFrame, type Viewport } from '@react-three/fiber'
 import * as THREE from 'three'
 
 import {
@@ -29,10 +29,12 @@ const Cards = ({ progress }: CardsProps) => {
 
   const updateScrollAnimation = ({
     ref,
-    progress
+    progress,
+    viewport
   }: {
     ref: React.RefObject<THREE.Group | null>
     progress: number
+    viewport: Viewport
   }) => {
     const node = ref.current
 
@@ -59,10 +61,10 @@ const Cards = ({ progress }: CardsProps) => {
 
     const easeInRiseProgress = riseProgress ** 3
 
-    const startFallAnimation = 0.055
-    const endFallAnimation = 0.2
+    const startFallAnimation = 0.06
+    const endFallAnimation = 0.12
 
-    const fallDistance = 0.1
+    const fallDistance = 0.06
 
     const fallProgress = THREE.MathUtils.clamp(
       (progress - startFallAnimation) / (endFallAnimation - startFallAnimation),
@@ -70,18 +72,52 @@ const Cards = ({ progress }: CardsProps) => {
       1
     )
 
-    const targetY = easeInRiseProgress * riseDistance
+    const easeInFallProgress = fallProgress ** 4
+
+    const targetY =
+      easeInRiseProgress * riseDistance - easeInFallProgress * fallDistance
 
     node.position.y = THREE.MathUtils.lerp(node.position.y, targetY, 0.05)
+
+    const startApproachAnimation = 0.06
+    const endApproachAnimation = 0.3
+
+    const approachDistance = viewport.width * 0.35
+
+    const approachProgress = THREE.MathUtils.clamp(
+      (progress - startApproachAnimation) /
+        (endApproachAnimation - startApproachAnimation),
+      0,
+      1
+    )
+
+    const easeInApproachProgress = approachProgress ** 5
+
+    // Z movement
+    const targetZ = easeInApproachProgress * approachDistance
+
+    node.position.z = THREE.MathUtils.lerp(node.position.z, targetZ, 0.05)
+
+    // X movement
+    const initialX = 0.08
+    const finalX = 0.04
+
+    const targetX = THREE.MathUtils.lerp(
+      initialX,
+      finalX,
+      easeInApproachProgress
+    )
+
+    node.position.x = THREE.MathUtils.lerp(node.position.x, targetX, 0.05)
   }
 
-  useFrame(({ pointer, clock }) => {
+  useFrame(({ pointer, clock, viewport }) => {
     if (!cardsMouseRef.current || !cardsIdleRef) return
 
     // updateIdleAnimaation({ ref: cardsMouseRef, clock })
     // updateMouseAnimation({ ref: cardsIdleRef, pointer })
 
-    updateScrollAnimation({ ref: cardsScrollRef, progress })
+    updateScrollAnimation({ ref: cardsScrollRef, progress, viewport })
   })
 
   return (
