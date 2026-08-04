@@ -14,7 +14,7 @@ const CardsSection = () => {
         entire pack is finally revealed.
       </p>
 
-      <p className="absolute bottom-[32px] left-1/2 -translate-x-1/2 text-explanation text-[1rem]">
+      <p className="absolute bottom-[32px] left-1/2 -translate-x-1/2 text-explanation text-[0.8rem]">
         Images are digital renderings, not actual cards.
       </p>
     </section>

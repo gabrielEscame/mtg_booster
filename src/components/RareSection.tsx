@@ -19,7 +19,7 @@ const RareSection = () => {
             becomes one worth traveling.
           </p>
 
-          <p className="text-explanation text-[1rem] mt-[22px] max-w-[470px]">
+          <p className="text-explanation text-[0.8rem] mt-[22px] max-w-[470px]">
             RARE — A remarkable companion, waiting beyond the common paths of a
             Play Booster. Rare cards appear in the booster’s rare-or-mythic
             slot, making every pack a chance to discover a powerful new ally for

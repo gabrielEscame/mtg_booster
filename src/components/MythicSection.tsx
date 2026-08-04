@@ -20,7 +20,7 @@ const MythicSection = () => {
           dare, and claim a legend worthy of any adventurer’s collection.
         </p>
 
-        <p className="text-explanation text-[1rem] mt-[22px] max-w-[470px]">
+        <p className="text-explanation text-[0.8rem] mt-[22px] max-w-[470px]">
           Beneath the Lonely Mountain lies more than gold. From the depths of
           your journey emerges Smaug the Magnificent—the fearsome Dragon whose
           hoard is matched only by his hunger for conquest. Draw near, if you
