@@ -187,16 +187,16 @@ const Cards = ({ progress }: CardsProps) => {
 
     if (!node) return
 
-    const fallStart = 0.5
-    const fallEnd = 0.67
+    const start = 0.5
+    const end = 0.67
 
-    const fallProgress = THREE.MathUtils.clamp(
-      (progress - fallStart) / (fallEnd - fallStart),
+    const animationProgress = THREE.MathUtils.clamp(
+      (progress - start) / (end - start),
       0,
       1
     )
 
-    const easeInProgress = fallProgress ** 4
+    const easeInProgress = animationProgress ** 4
 
     const fallDistance = -0.06
     const repositionDitance = -0.115
@@ -207,6 +207,27 @@ const Cards = ({ progress }: CardsProps) => {
     node.position.y = THREE.MathUtils.lerp(node.position.y, targetY, 0.05)
 
     node.position.x = THREE.MathUtils.lerp(node.position.x, targetX, 0.05)
+
+    // Z rotation
+
+    const rotationStart = 0.6
+    const rotationEnd = 0.67
+
+    const rotationProgress = THREE.MathUtils.clamp(
+      (progress - rotationStart) / (rotationEnd - rotationStart),
+      0,
+      1
+    )
+
+    const easeInRotationProgress = rotationProgress ** 4
+
+    const targerZRotatiton = easeInRotationProgress * Math.PI
+
+    node.rotation.y = THREE.MathUtils.lerp(
+      node.rotation.y,
+      -(targerZRotatiton * 2),
+      0.04
+    )
   }
 
   const updateRareAndStackLastCounterMove = ({
