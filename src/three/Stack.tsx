@@ -1,4 +1,4 @@
-import { useGLTF } from '@react-three/drei'
+import { Group, type Object3DEventMap } from 'three'
 
 const CARDS_OFFSETS = [
   {
@@ -63,9 +63,7 @@ const CARDS_OFFSETS = [
   }
 ]
 
-const Stack = () => {
-  const { scene: cardScene } = useGLTF('/models/mythic_card.glb')
-
+const Stack = ({ cardScene }: { cardScene: Group<Object3DEventMap> }) => {
   const cardSpacing = 0.0005
   const stackStart = 0.001
 

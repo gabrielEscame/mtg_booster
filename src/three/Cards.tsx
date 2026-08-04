@@ -4,12 +4,12 @@ import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
 import {
-  // updateIdleAnimaation,
-  // updateMouseAnimation,
+  updateIdleAnimaation,
+  updateMouseAnimation,
   updateOpacity
 } from './utils'
 
-// import Stack from './Stack'
+import Stack from './Stack'
 
 interface CardsProps {
   progress: number
@@ -18,6 +18,7 @@ interface CardsProps {
 const Cards = ({ progress }: CardsProps) => {
   const { scene: mythicCard } = useGLTF('/models/mythic_card.glb')
   const { scene: rareCard } = useGLTF('/models/rare_card.glb')
+  const { scene: stackCard } = useGLTF('/models/rare_card.glb')
 
   const cardsMouseRef = useRef<THREE.Group | null>(null)
   const cardsIdleRef = useRef<THREE.Group | null>(null)
@@ -59,6 +60,11 @@ const Cards = ({ progress }: CardsProps) => {
       opacity: targetOpacity
     })
 
+    updateOpacity({
+      object: stackCard,
+      opacity: targetOpacity
+    })
+
     const starRiseAnimation = 0.01
     const endRiseAnimation = 0.05
 
@@ -86,7 +92,7 @@ const Cards = ({ progress }: CardsProps) => {
     node.position.y = THREE.MathUtils.lerp(node.position.y, targetY, 0.05)
   }
 
-  useFrame(() => {
+  useFrame(({ pointer, clock }) => {
     if (!cardsMouseRef.current || !cardsIdleRef) return
 
     // updateIdleAnimaation({ ref: cardsMouseRef, clock })
@@ -107,7 +113,7 @@ const Cards = ({ progress }: CardsProps) => {
             <primitive object={rareCard} scale={1} position={[0, 0, -0.0005]} />
           </group>
 
-          {/* <Stack /> */}
+          <Stack cardScene={stackCard} />
         </group>
       </group>
     </group>
