@@ -38,35 +38,16 @@ const Cards = ({ progress }: CardsProps) => {
 
     if (!node) return
 
-    const startFadeInAnimation = 0.01
-    const endFadeInAnimation = 0.011
+    const showCards = 0.05
 
-    const fadeInProgress = THREE.MathUtils.clamp(
-      (progress - startFadeInAnimation) /
-        (endFadeInAnimation - startFadeInAnimation),
-      0,
-      1
-    )
+    const isVisible = progress >= showCards
 
-    const targetOpacity = fadeInProgress
+    mythicCard.visible = isVisible
+    rareCard.visible = isVisible
+    stackCard.visible = isVisible
 
-    updateOpacity({
-      object: mythicCard,
-      opacity: targetOpacity
-    })
-
-    updateOpacity({
-      object: rareCard,
-      opacity: targetOpacity
-    })
-
-    updateOpacity({
-      object: stackCard,
-      opacity: targetOpacity
-    })
-
-    const starRiseAnimation = 0.01
-    const endRiseAnimation = 0.05
+    const starRiseAnimation = 0.06
+    const endRiseAnimation = 0.07
 
     const riseDistance = 0.06
 
@@ -87,7 +68,7 @@ const Cards = ({ progress }: CardsProps) => {
       1
     )
 
-    const targetY = riseProgress * riseDistance - fallProgress * fallDistance
+    const targetY = riseProgress * riseDistance
 
     node.position.y = THREE.MathUtils.lerp(node.position.y, targetY, 0.05)
   }
