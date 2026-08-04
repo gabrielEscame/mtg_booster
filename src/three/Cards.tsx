@@ -22,9 +22,9 @@ const Cards = ({ progress }: CardsProps) => {
 
   const rareAndStackCounterRef = useRef<THREE.Group | null>(null)
   const rareAndStackAnimationRef = useRef<THREE.Group | null>(null)
+  const rareAndStackLastCounterRef = useRef<THREE.Group | null>(null)
 
   const mythicCardRef = useRef<THREE.Group | null>(null)
-  const rareCardRef = useRef<THREE.Group | null>(null)
 
   const updateCardsScrollAnimation = ({
     ref,
@@ -187,29 +187,60 @@ const Cards = ({ progress }: CardsProps) => {
 
     if (!node) return
 
-    const animationStart = 0.5
-    const animationEnd = 0.6
+    const fallStart = 0.5
+    const fallEnd = 0.67
 
-    const animationProgress = THREE.MathUtils.clamp(
-      (progress - animationStart) / (animationEnd - animationStart),
+    const fallProgress = THREE.MathUtils.clamp(
+      (progress - fallStart) / (fallEnd - fallStart),
       0,
       1
     )
 
-    const easedProgress = animationProgress ** 4
+    const easeInProgress = fallProgress ** 4
 
-    const fallDistance = 0.05
+    const fallDistance = -0.06
+    const repositionDitance = -0.115
 
-    const targetY = -easedProgress * fallDistance
+    const targetY = easeInProgress * fallDistance
+    const targetX = easeInProgress * repositionDitance
 
     node.position.y = THREE.MathUtils.lerp(node.position.y, targetY, 0.05)
+
+    node.position.x = THREE.MathUtils.lerp(node.position.x, targetX, 0.05)
+  }
+
+  const updateRareAndStackLastCounterMove = ({
+    ref,
+    progress
+  }: {
+    ref: React.RefObject<THREE.Group | null>
+    progress: number
+  }) => {
+    const node = ref.current
+
+    if (!node) return
+
+    const counterStart = 0.7
+
+    const counterProgress = THREE.MathUtils.clamp(
+      (progress - counterStart) / (1 - counterStart),
+      0,
+      1
+    )
+
+    // Must match the mythic counter distance
+    const parentFallDistance = 0.15
+
+    const targetY = counterProgress * parentFallDistance
+
+    node.position.y = THREE.MathUtils.lerp(node.position.y, targetY, 0.3)
   }
 
   useFrame(({ pointer, clock, viewport }) => {
     if (!cardsMouseRef.current || !cardsIdleRef || !mythicCardRef) return
 
-    updateIdleAnimaation({ ref: cardsMouseRef, clock })
-    updateMouseAnimation({ ref: cardsIdleRef, pointer })
+    updateIdleAnimaation({ ref: cardsIdleRef, clock })
+    // updateMouseAnimation({ ref: cardsMouseRef, pointer })
 
     updateCardsScrollAnimation({ ref: cardsScrollRef, progress, viewport })
 
@@ -217,6 +248,10 @@ const Cards = ({ progress }: CardsProps) => {
 
     updateRareAndStackCounterMove({ ref: rareAndStackCounterRef, progress })
     updateRareAndStackAnimation({ ref: rareAndStackAnimationRef, progress })
+    updateRareAndStackLastCounterMove({
+      ref: rareAndStackLastCounterRef,
+      progress
+    })
   })
 
   return (
@@ -231,15 +266,15 @@ const Cards = ({ progress }: CardsProps) => {
           {/* Rare and Stack continue together */}
           <group ref={rareAndStackCounterRef}>
             <group ref={rareAndStackAnimationRef}>
-              <group ref={rareCardRef}>
+              <group ref={rareAndStackLastCounterRef}>
                 <primitive
                   object={rareCard}
                   scale={1}
                   position={[0, 0, -0.0005]}
                 />
-              </group>
 
-              <Stack cardScene={stackCard} />
+                <Stack cardScene={stackCard} />
+              </group>
             </group>
           </group>
         </group>
