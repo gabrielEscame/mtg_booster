@@ -3,6 +3,8 @@ import { useGLTF } from '@react-three/drei'
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 
+import { updateIdleAnimaation, updateMouseAnimation } from './utils'
+
 function Booster({ progress }: { progress: number }) {
   const { scene } = useGLTF('/models/booster.glb')
   const animationRef = useRef<THREE.Group | null>(null)
@@ -22,60 +24,6 @@ function Booster({ progress }: { progress: number }) {
       })
     })
   }, [scene])
-
-  const updateMouseAnimation = ({
-    ref,
-    pointer
-  }: {
-    ref: React.RefObject<THREE.Group | null>
-    pointer: THREE.Vector2
-  }) => {
-    const node = ref.current
-    if (!node) return
-
-    node.rotation.y = THREE.MathUtils.lerp(
-      node.rotation.y,
-      pointer.x * 0.6,
-      0.05
-    )
-
-    node.rotation.x = THREE.MathUtils.lerp(
-      node.rotation.x,
-      -pointer.y * 0.1,
-      0.05
-    )
-  }
-
-  const updateIdleAnimaation = ({
-    ref,
-    clock
-  }: {
-    ref: React.RefObject<THREE.Group | null>
-    clock: THREE.Clock
-  }) => {
-    const node = ref.current
-    if (!node) return
-
-    const elapsedTime = clock.getElapsedTime()
-
-    const idleXTranslationAmplitude = 0.0015
-    const idleXTranslationSpeed = 4
-
-    node.position.y =
-      Math.sin(elapsedTime * idleXTranslationSpeed) * idleXTranslationAmplitude
-
-    const idleXRotationAmplitude = 0.06
-    const idleXRotationSpeed = 0.8
-
-    node.rotation.x =
-      Math.sin(elapsedTime * idleXRotationSpeed) * idleXRotationAmplitude
-
-    const idleZRotationAmplitude = 0.06
-    const idleZRotationSpeed = 0.8
-
-    node.rotation.z =
-      Math.sin(elapsedTime * idleZRotationSpeed) * idleZRotationAmplitude
-  }
 
   const updateScrollAnimation = ({
     ref,

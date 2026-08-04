@@ -3,6 +3,8 @@ import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
+import { updateIdleAnimaation, updateMouseAnimation } from './utils'
+
 const CardsStack = () => {
   const { scene: cardScene } = useGLTF('/models/mythic_card.glb')
 
@@ -94,34 +96,15 @@ const Cards = () => {
   const mythicCardRef = useRef<THREE.Group | null>(null)
   const rareCardRef = useRef<THREE.Group | null>(null)
 
-  const updateMouseAnimation = ({
-    ref,
-    pointer
-  }: {
-    ref: React.RefObject<THREE.Group | null>
-    pointer: THREE.Vector2
-  }) => {
-    const node = ref.current
-    if (!node) return
-
-    node.rotation.y = THREE.MathUtils.lerp(node.rotation.y, pointer.x * 5, 0.05)
-
-    node.rotation.x = THREE.MathUtils.lerp(
-      node.rotation.x,
-      -pointer.y * 5,
-      0.05
-    )
-  }
-
-  useFrame(({ pointer }) => {
+  useFrame(({ pointer, clock }) => {
     if (!cardsMouseRef.current) return
 
-    // Mouse interaction for rotation
+    updateIdleAnimaation({ ref: cardsMouseRef, clock })
     updateMouseAnimation({ ref: cardsMouseRef, pointer })
   })
-  
+
   return (
-    <group ref={cardsMouseRef} position={[0, 0, 0]}>
+    <group ref={cardsMouseRef} position={[0.08, 0, 0]}>
       <group ref={mythicCardRef}>
         <primitive object={mythicCard} scale={1} />
       </group>
