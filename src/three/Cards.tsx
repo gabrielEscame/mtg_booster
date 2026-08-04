@@ -24,10 +24,12 @@ const Cards = ({ progress }: CardsProps) => {
   const cardsIdleRef = useRef<THREE.Group | null>(null)
   const cardsScrollRef = useRef<THREE.Group | null>(null)
 
+  const rareAndStackRef = useRef<THREE.Group | null>(null)
+
   const mythicCardRef = useRef<THREE.Group | null>(null)
   const rareCardRef = useRef<THREE.Group | null>(null)
 
-  const updateScrollAnimation = ({
+  const updateCardsScrollAnimation = ({
     ref,
     progress,
     viewport
@@ -82,7 +84,7 @@ const Cards = ({ progress }: CardsProps) => {
     const startApproachAnimation = 0.06
     const endApproachAnimation = 0.3
 
-    const approachDistance = viewport.width * 0.35
+    const approachDistance = viewport.width * 0.3
     const approachRotation = Math.PI
 
     const approachProgress = THREE.MathUtils.clamp(
@@ -110,7 +112,7 @@ const Cards = ({ progress }: CardsProps) => {
 
     // X movement
     const initialX = 0.08
-    const finalX = 0.04
+    const finalX = 0.05
 
     const targetX = THREE.MathUtils.lerp(
       initialX,
@@ -121,28 +123,61 @@ const Cards = ({ progress }: CardsProps) => {
     node.position.x = THREE.MathUtils.lerp(node.position.x, targetX, 0.05)
   }
 
+  const updateMythicScrollAnimation = ({
+    ref
+  }: {
+    ref: React.RefObject<THREE.Group | null>
+  }) => {
+    const node = ref.current
+
+    if (!node) return
+
+    const mythicStopProgress = 0.33
+
+    const mythicLockProgress = THREE.MathUtils.clamp(
+      (progress - mythicStopProgress) / (1 - mythicStopProgress),
+      0,
+      1
+    )
+
+    const continuedFallDistance = 0.3
+
+    const mythicCounterY = mythicLockProgress * continuedFallDistance
+
+    node.position.y = THREE.MathUtils.lerp(node.position.y, mythicCounterY, 0.3)
+  }
+
   useFrame(({ pointer, clock, viewport }) => {
-    if (!cardsMouseRef.current || !cardsIdleRef) return
+    if (!cardsMouseRef.current || !cardsIdleRef || !mythicCardRef) return
 
     // updateIdleAnimaation({ ref: cardsMouseRef, clock })
     // updateMouseAnimation({ ref: cardsIdleRef, pointer })
 
-    updateScrollAnimation({ ref: cardsScrollRef, progress, viewport })
+    updateCardsScrollAnimation({ ref: cardsScrollRef, progress, viewport })
+    updateMythicScrollAnimation({ ref: mythicCardRef })
   })
 
   return (
     <group ref={cardsScrollRef} position={[0.08, 0, 0]}>
       <group ref={cardsMouseRef}>
         <group ref={cardsIdleRef}>
+          {/* Mythic becomes independent */}
           <group ref={mythicCardRef}>
             <primitive object={mythicCard} scale={1} />
           </group>
 
-          <group ref={rareCardRef}>
-            <primitive object={rareCard} scale={1} position={[0, 0, -0.0005]} />
-          </group>
+          {/* Rare and Stack continue together */}
+          <group ref={rareAndStackRef}>
+            <group ref={rareCardRef}>
+              <primitive
+                object={rareCard}
+                scale={1}
+                position={[0, 0, -0.0005]}
+              />
+            </group>
 
-          <Stack cardScene={stackCard} />
+            <Stack cardScene={stackCard} />
+          </group>
         </group>
       </group>
     </group>
