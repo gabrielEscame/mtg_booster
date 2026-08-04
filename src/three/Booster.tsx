@@ -3,7 +3,11 @@ import { useGLTF } from '@react-three/drei'
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 
-import { updateIdleAnimaation, updateMouseAnimation } from './utils'
+import {
+  updateIdleAnimaation,
+  updateMouseAnimation,
+  updateOpacity
+} from './utils'
 
 function Booster({ progress }: { progress: number }) {
   const { scene } = useGLTF('/models/booster.glb')
@@ -102,27 +106,17 @@ function Booster({ progress }: { progress: number }) {
 
     const targetOpacity = 1 - fadeProgress
 
-    scene.traverse((object) => {
-      if (!(object instanceof THREE.Mesh)) return
-
-      const materials = Array.isArray(object.material)
-        ? object.material
-        : [object.material]
-
-      materials.forEach((material) => {
-        material.opacity = targetOpacity
-      })
-    })
+    updateOpacity({ object: scene, opacity: targetOpacity })
   }
 
   useFrame(({ pointer, clock }) => {
     if (!animationRef.current || !mouseRef.current || !idleRef.current) return
 
-    // // Mouse interaction for rotation
-    // updateMouseAnimation({ ref: mouseRef, pointer })
+    // Mouse interaction for rotation
+    updateMouseAnimation({ ref: mouseRef, pointer })
 
-    // // Idle animation
-    // updateIdleAnimaation({ ref: idleRef, clock })
+    // Idle animation
+    updateIdleAnimaation({ ref: idleRef, clock })
 
     // Scroll animation based on progress
     updateScrollAnimation({ ref: animationRef, progress })

@@ -6,7 +6,6 @@ import * as THREE from 'three'
 import {
   updateIdleAnimaation,
   updateMouseAnimation,
-  updateOpacity
 } from './utils'
 
 import Stack from './Stack'
@@ -24,7 +23,8 @@ const Cards = ({ progress }: CardsProps) => {
   const cardsIdleRef = useRef<THREE.Group | null>(null)
   const cardsScrollRef = useRef<THREE.Group | null>(null)
 
-  const rareAndStackRef = useRef<THREE.Group | null>(null)
+  const rareAndStackCounterRef = useRef<THREE.Group | null>(null)
+  const rareAndStackAnimationRef = useRef<THREE.Group | null>(null)
 
   const mythicCardRef = useRef<THREE.Group | null>(null)
   const rareCardRef = useRef<THREE.Group | null>(null)
@@ -84,7 +84,7 @@ const Cards = ({ progress }: CardsProps) => {
     const startApproachAnimation = 0.06
     const endApproachAnimation = 0.3
 
-    const approachDistance = viewport.width * 0.3
+    const approachDistance = viewport.width * 0.2
     const approachRotation = Math.PI
 
     const approachProgress = THREE.MathUtils.clamp(
@@ -112,7 +112,7 @@ const Cards = ({ progress }: CardsProps) => {
 
     // X movement
     const initialX = 0.08
-    const finalX = 0.05
+    const finalX = 0.06
 
     const targetX = THREE.MathUtils.lerp(
       initialX,
@@ -147,14 +147,79 @@ const Cards = ({ progress }: CardsProps) => {
     node.position.y = THREE.MathUtils.lerp(node.position.y, mythicCounterY, 0.3)
   }
 
+  const updateRareAndStackCounterMove = ({
+    ref,
+    progress
+  }: {
+    ref: React.RefObject<THREE.Group | null>
+    progress: number
+  }) => {
+    const node = ref.current
+
+    if (!node) return
+
+    const counterStart = 0.33
+    const counterEnd = 0.5
+
+    // Stop reproducing the mythic movement after 0.5
+    const cappedProgress = Math.min(progress, counterEnd)
+
+    // Use the same timeline as the mythic animation
+    const counterProgress = THREE.MathUtils.clamp(
+      (cappedProgress - counterStart) / (1 - counterStart),
+      0,
+      1
+    )
+
+    // Must match the mythic counter distance
+    const parentFallDistance = 0.3
+
+    const targetY = counterProgress * parentFallDistance
+
+    node.position.y = THREE.MathUtils.lerp(node.position.y, targetY, 0.3)
+  }
+
+  const updateRareAndStackAnimation = ({
+    ref,
+    progress
+  }: {
+    ref: React.RefObject<THREE.Group | null>
+    progress: number
+  }) => {
+    const node = ref.current
+
+    if (!node) return
+
+    const animationStart = 0.5
+    const animationEnd = 0.6
+
+    const animationProgress = THREE.MathUtils.clamp(
+      (progress - animationStart) / (animationEnd - animationStart),
+      0,
+      1
+    )
+
+    const easedProgress = animationProgress ** 4
+
+    const fallDistance = 0.05
+
+    const targetY = -easedProgress * fallDistance
+
+    node.position.y = THREE.MathUtils.lerp(node.position.y, targetY, 0.05)
+  }
+
   useFrame(({ pointer, clock, viewport }) => {
     if (!cardsMouseRef.current || !cardsIdleRef || !mythicCardRef) return
 
-    // updateIdleAnimaation({ ref: cardsMouseRef, clock })
-    // updateMouseAnimation({ ref: cardsIdleRef, pointer })
+    updateIdleAnimaation({ ref: cardsMouseRef, clock })
+    updateMouseAnimation({ ref: cardsIdleRef, pointer })
 
     updateCardsScrollAnimation({ ref: cardsScrollRef, progress, viewport })
+
     updateMythicScrollAnimation({ ref: mythicCardRef })
+
+    updateRareAndStackCounterMove({ ref: rareAndStackCounterRef, progress })
+    updateRareAndStackAnimation({ ref: rareAndStackAnimationRef, progress })
   })
 
   return (
@@ -167,16 +232,18 @@ const Cards = ({ progress }: CardsProps) => {
           </group>
 
           {/* Rare and Stack continue together */}
-          <group ref={rareAndStackRef}>
-            <group ref={rareCardRef}>
-              <primitive
-                object={rareCard}
-                scale={1}
-                position={[0, 0, -0.0005]}
-              />
-            </group>
+          <group ref={rareAndStackCounterRef}>
+            <group ref={rareAndStackAnimationRef}>
+              <group ref={rareCardRef}>
+                <primitive
+                  object={rareCard}
+                  scale={1}
+                  position={[0, 0, -0.0005]}
+                />
+              </group>
 
-            <Stack cardScene={stackCard} />
+              <Stack cardScene={stackCard} />
+            </group>
           </group>
         </group>
       </group>
