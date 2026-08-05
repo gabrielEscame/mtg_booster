@@ -3,7 +3,7 @@ import { useGLTF } from '@react-three/drei'
 import { useRef, type RefObject } from 'react'
 import * as THREE from 'three'
 import { useFrame } from '@react-three/fiber'
-import { updateIdleAnimaation, updateMouseAnimation } from './utils'
+import { updateIdleAnimaation } from './utils'
 
 const RestBoosterCards = ({ progress }: { progress: number }) => {
   const { scene: azogCard } = useGLTF('/models/azog_card.glb')
@@ -88,8 +88,7 @@ const RestBoosterCards = ({ progress }: { progress: number }) => {
     node.position.x = THREE.MathUtils.lerp(node.position.x, targetX, 0.05)
   }
 
-  useFrame(({ pointer, clock }) => {
-
+  useFrame(({ clock }) => {
     REST_OF_BOOSTER_CARDS.forEach(({ idleRef }, index) => {
       updateIdleAnimaation({
         ref: idleRef,
@@ -99,12 +98,6 @@ const RestBoosterCards = ({ progress }: { progress: number }) => {
       })
     })
 
-    updateMouseAnimation({
-      ref: restBoosterCardsMouseRef,
-      pointer,
-      strength: 0.1
-    })
-
     updateScrollAnimation({ ref: restBoosterCardsAnimationRef, progress })
   })
 
@@ -112,17 +105,24 @@ const RestBoosterCards = ({ progress }: { progress: number }) => {
     <group ref={restBoosterCardsAnimationRef}>
       <group ref={restBoosterCardsMouseRef}>
         {REST_OF_BOOSTER_CARDS.map(({ object, idleRef }, idx) => (
-          <group key={idx} ref={idleRef}>
+          <group
+            key={idx}
+            ref={idleRef}
+            position={[
+              restBoosterCardsStart + idx * restBoosterCardsSpacing,
+              2,
+              0
+            ]}
+          >
             <primitive
+              position={[
+                0,
+                -0.04,
+                0
+              ]}
               key={idx}
               object={object}
               scale={1}
-              position={[
-                restBoosterCardsStart + idx * restBoosterCardsSpacing,
-                -0.03,
-                0
-              ]}
-              rotation={[0, 0, 0]}
             />
           </group>
         ))}
