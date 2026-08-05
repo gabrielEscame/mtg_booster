@@ -113,11 +113,15 @@ function Booster({ progress }: { progress: number }) {
   useFrame(({ pointer, clock }) => {
     if (!animationRef.current || !mouseRef.current || !idleRef.current) return
 
+    const isCardRevelTimeline = progress >= 0.1 && progress <= 0.2
+
+    const motionStrength = isCardRevelTimeline ? 0 : 1
+
     // Mouse interaction for rotation
-    updateMouseAnimation({ ref: mouseRef, pointer })
+    updateMouseAnimation({ ref: mouseRef, pointer, strength: motionStrength })
 
     // Idle animation
-    updateIdleAnimaation({ ref: idleRef, clock })
+    updateIdleAnimaation({ ref: idleRef, clock, strength: motionStrength })
 
     // Scroll animation based on progress
     updateScrollAnimation({ ref: animationRef, progress })

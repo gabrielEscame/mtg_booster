@@ -285,9 +285,15 @@ const Cards = ({ progress }: CardsProps) => {
       return
 
     updateCardsVisibility({ ref: cardsVisibilityRef, progress })
-    updateIdleAnimaation({ ref: cardsIdleRef, clock })
 
-    const mouseAnimationStrenght = progress >= 0.39 && progress <= 0.58 ? 0 : 1
+    const isBoosterOverCardsTimeline = progress >= 0.16 && progress <= 0.18
+
+    const indleStrength = isBoosterOverCardsTimeline ? 0 : 1
+    updateIdleAnimaation({ ref: cardsIdleRef, clock, strength: indleStrength })
+
+    const isMythicOverRareStackTimeline = progress >= 0.39 && progress <= 0.59
+    const mouseAnimationStrenght =
+      isBoosterOverCardsTimeline || isMythicOverRareStackTimeline ? 0 : 1
 
     updateMouseAnimation({
       ref: mythicCardRef,

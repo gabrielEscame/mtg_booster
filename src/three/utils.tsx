@@ -2,10 +2,12 @@ import * as THREE from 'three'
 
 const updateIdleAnimaation = ({
   ref,
-  clock
+  clock,
+  strength = 1
 }: {
   ref: React.RefObject<THREE.Group | null>
   clock: THREE.Clock
+  strength?: number
 }) => {
   const node = ref.current
   if (!node) return
@@ -16,8 +18,8 @@ const updateIdleAnimaation = ({
   const idleXTranslationSpeed = 4
 
   node.position.y =
-    Math.sin(elapsedTime * idleXTranslationSpeed) * idleXTranslationAmplitude
-
+    Math.sin(elapsedTime * idleXTranslationSpeed) *
+    (idleXTranslationAmplitude * strength)
   const idleXRotationAmplitude = 0.06
   const idleXRotationSpeed = 0.8
 
@@ -28,24 +30,34 @@ const updateIdleAnimaation = ({
   const idleZRotationSpeed = 0.8
 
   node.rotation.z =
-    Math.sin(elapsedTime * idleZRotationSpeed) * idleZRotationAmplitude
+    Math.sin(elapsedTime * idleZRotationSpeed) *
+    (idleZRotationAmplitude * strength)
 }
 
 const updateMouseAnimation = ({
   ref,
-  pointer
+  pointer,
+  strength = 1
 }: {
   ref: React.RefObject<THREE.Group | null>
   pointer: THREE.Vector2
+  strength?: number
 }) => {
   const node = ref.current
   if (!node) return
 
-  node.rotation.y = THREE.MathUtils.lerp(node.rotation.y, pointer.x * 0.6, 0.05)
+  const rotationY = pointer.x * 0.6
+  const rotationX = pointer.x * 0.2
+
+  node.rotation.y = THREE.MathUtils.lerp(
+    node.rotation.y,
+    rotationY * strength,
+    0.05
+  )
 
   node.rotation.x = THREE.MathUtils.lerp(
     node.rotation.x,
-    -pointer.y * 0.1,
+    rotationX * strength,
     0.05
   )
 }
