@@ -45,6 +45,7 @@ const Scene = ({
   return (
     <div className="absolute h-screen w-screen inset-0 z-20">
       <Canvas
+        eventSource={document.body}
         camera={{
           position: [0, 0, 0.3],
           fov: 40

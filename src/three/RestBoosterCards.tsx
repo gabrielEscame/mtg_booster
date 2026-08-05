@@ -89,7 +89,6 @@ const RestBoosterCards = ({ progress }: { progress: number }) => {
   }
 
   useFrame(({ pointer, clock }) => {
-    if (!restBoosterCardsAnimationRef || !restBoosterCardsMouseRef) return
 
     REST_OF_BOOSTER_CARDS.forEach(({ idleRef }, index) => {
       updateIdleAnimaation({

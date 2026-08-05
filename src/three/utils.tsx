@@ -22,11 +22,12 @@ const updateIdleAnimaation = ({
   node.position.y =
     Math.sin(elapsedTime * idleXTranslationSpeed) *
     (idleXTranslationAmplitude * strength)
+
   const idleXRotationAmplitude = 0.06
   const idleXRotationSpeed = 0.8
 
   node.rotation.x =
-    Math.sin(elapsedTime * idleXRotationSpeed) * idleXRotationAmplitude
+    Math.sin(elapsedTime * idleXRotationSpeed) * (idleXRotationAmplitude * strength)
 
   const idleZRotationAmplitude = 0.06
   const idleZRotationSpeed = 0.8

@@ -25,7 +25,7 @@ export default function App() {
       </div>
 
       <div className="relative h-[200vh]" ref={cardsGroupRef}>
-        <div className="sticky top-0 h-sscreen">
+        <div className="sticky top-0 h-screen">
           <CardsSection />
           <StaticScene cardsGroupRef={cardsGroupRef} />
         </div>
