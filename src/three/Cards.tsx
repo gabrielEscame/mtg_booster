@@ -283,11 +283,22 @@ const Cards = ({ progress }: CardsProps) => {
       !cardsVisibilityRef
     )
       return
-    updateCardsVisibility({ ref: cardsVisibilityRef, progress })
 
+    updateCardsVisibility({ ref: cardsVisibilityRef, progress })
     updateIdleAnimaation({ ref: cardsIdleRef, clock })
-    updateMouseAnimation({ ref: mythicCardRef, pointer })
-    updateMouseAnimation({ ref: rareAndStackIdleRef, pointer })
+
+    const mouseAnimationStrenght = progress >= 0.39 && progress <= 0.58 ? 0 : 1
+
+    updateMouseAnimation({
+      ref: mythicCardRef,
+      pointer,
+      strength: mouseAnimationStrenght
+    })
+    updateMouseAnimation({
+      ref: rareAndStackIdleRef,
+      pointer,
+      strength: mouseAnimationStrenght
+    })
 
     updateCardsScrollAnimation({ ref: cardsScrollRef, progress, viewport })
 
