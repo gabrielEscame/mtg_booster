@@ -16,15 +16,35 @@ const Cards = ({ progress }: CardsProps) => {
   const { scene: rareCard } = useGLTF('/models/rare_card.glb')
   const { scene: stackCard } = useGLTF('/models/rare_card.glb')
 
+  const cardsVisibilityRef = useRef<THREE.Group | null>(null)
   const cardsMouseRef = useRef<THREE.Group | null>(null)
   const cardsIdleRef = useRef<THREE.Group | null>(null)
   const cardsScrollRef = useRef<THREE.Group | null>(null)
 
+  const rareAndStackIdleRef = useRef<THREE.Group | null>(null)
   const rareAndStackCounterRef = useRef<THREE.Group | null>(null)
   const rareAndStackAnimationRef = useRef<THREE.Group | null>(null)
   const rareAndStackLastCounterRef = useRef<THREE.Group | null>(null)
 
   const mythicCardRef = useRef<THREE.Group | null>(null)
+
+  const updateCardsVisibility = ({
+    ref,
+    progress
+  }: {
+    ref: React.RefObject<THREE.Group | null>
+    progress: number
+  }) => {
+    const node = ref.current
+
+    if (!node) return
+
+    const showCards = 0.16
+
+    const isVisible = progress >= showCards
+
+    node.visible = isVisible
+  }
 
   const updateCardsScrollAnimation = ({
     ref,
@@ -38,14 +58,6 @@ const Cards = ({ progress }: CardsProps) => {
     const node = ref.current
 
     if (!node) return
-
-    const showCards = 0.16
-
-    const isVisible = progress >= showCards
-
-    mythicCard.visible = isVisible
-    rareCard.visible = isVisible
-    stackCard.visible = isVisible
 
     const starRiseAnimation = 0.13
     const endRiseAnimation = 0.17
@@ -78,7 +90,7 @@ const Cards = ({ progress }: CardsProps) => {
 
     node.position.y = THREE.MathUtils.lerp(node.position.y, targetY, 0.05)
 
-    const startApproachAnimation = 0.06
+    const startApproachAnimation = 0.18
     const endApproachAnimation = 0.3
 
     const approachDistance = viewport.width * 0.2
@@ -120,7 +132,7 @@ const Cards = ({ progress }: CardsProps) => {
     node.position.x = THREE.MathUtils.lerp(node.position.x, targetX, 0.05)
   }
 
-  const updateMythicScrollAnimation = ({
+  const updateMythicCounterMove = ({
     ref
   }: {
     ref: React.RefObject<THREE.Group | null>
@@ -187,8 +199,8 @@ const Cards = ({ progress }: CardsProps) => {
 
     if (!node) return
 
-    const start = 0.5
-    const end = 0.67
+    const start = 0.3
+    const end = 0.65
 
     const animationProgress = THREE.MathUtils.clamp(
       (progress - start) / (end - start),
@@ -196,7 +208,7 @@ const Cards = ({ progress }: CardsProps) => {
       1
     )
 
-    const easeInProgress = animationProgress ** 4
+    const easeInProgress = animationProgress ** 3
 
     const fallDistance = -0.06
     const repositionDitance = -0.115
@@ -210,8 +222,8 @@ const Cards = ({ progress }: CardsProps) => {
 
     // Z rotation
 
-    const rotationStart = 0.6
-    const rotationEnd = 0.67
+    const rotationStart = 0.62
+    const rotationEnd = 0.65
 
     const rotationProgress = THREE.MathUtils.clamp(
       (progress - rotationStart) / (rotationEnd - rotationStart),
@@ -219,14 +231,18 @@ const Cards = ({ progress }: CardsProps) => {
       1
     )
 
-    const easeInRotationProgress = rotationProgress ** 4
+    const easeInRotationProgress = rotationProgress ** 1.5
 
     const targerZRotatiton = easeInRotationProgress * Math.PI
+
+    const isReversingRotation = progress < rotationEnd
+
+    const rotationLerp = isReversingRotation ? 0.15 : 0.04
 
     node.rotation.y = THREE.MathUtils.lerp(
       node.rotation.y,
       -(targerZRotatiton * 2),
-      0.04
+      rotationLerp
     )
   }
 
@@ -241,7 +257,7 @@ const Cards = ({ progress }: CardsProps) => {
 
     if (!node) return
 
-    const counterStart = 0.7
+    const counterStart = 0.65
 
     const counterProgress = THREE.MathUtils.clamp(
       (progress - counterStart) / (1 - counterStart),
@@ -258,14 +274,24 @@ const Cards = ({ progress }: CardsProps) => {
   }
 
   useFrame(({ pointer, clock, viewport }) => {
-    if (!cardsMouseRef.current || !cardsIdleRef || !mythicCardRef) return
+    if (
+      !cardsMouseRef ||
+      !cardsIdleRef ||
+      !mythicCardRef ||
+      !rareAndStackCounterRef ||
+      !rareAndStackLastCounterRef ||
+      !cardsVisibilityRef
+    )
+      return
+    updateCardsVisibility({ ref: cardsVisibilityRef, progress })
 
     updateIdleAnimaation({ ref: cardsIdleRef, clock })
-    // updateMouseAnimation({ ref: cardsMouseRef, pointer })
+    updateMouseAnimation({ ref: mythicCardRef, pointer })
+    updateMouseAnimation({ ref: rareAndStackIdleRef, pointer })
 
     updateCardsScrollAnimation({ ref: cardsScrollRef, progress, viewport })
 
-    updateMythicScrollAnimation({ ref: mythicCardRef })
+    updateMythicCounterMove({ ref: mythicCardRef })
 
     updateRareAndStackCounterMove({ ref: rareAndStackCounterRef, progress })
     updateRareAndStackAnimation({ ref: rareAndStackAnimationRef, progress })
@@ -276,25 +302,27 @@ const Cards = ({ progress }: CardsProps) => {
   })
 
   return (
-    <group ref={cardsScrollRef} position={[0.08, 0, 0]}>
-      <group ref={cardsMouseRef}>
-        <group ref={cardsIdleRef}>
-          {/* Mythic becomes independent */}
-          <group ref={mythicCardRef}>
-            <primitive object={mythicCard} scale={1} />
-          </group>
+    <group ref={cardsVisibilityRef}>
+      <group ref={cardsScrollRef} position={[0.08, 0, 0]}>
+        <group ref={cardsMouseRef}>
+          <group ref={cardsIdleRef}>
+            <group ref={mythicCardRef}>
+              <primitive object={mythicCard} scale={1} />
+            </group>
 
-          {/* Rare and Stack continue together */}
-          <group ref={rareAndStackCounterRef}>
-            <group ref={rareAndStackAnimationRef}>
-              <group ref={rareAndStackLastCounterRef}>
-                <primitive
-                  object={rareCard}
-                  scale={1}
-                  position={[0, 0, -0.0005]}
-                />
+            <group ref={rareAndStackCounterRef}>
+              <group ref={rareAndStackAnimationRef}>
+                <group ref={rareAndStackLastCounterRef}>
+                  <group ref={rareAndStackIdleRef}>
+                    <primitive
+                      object={rareCard}
+                      scale={1}
+                      position={[0, 0, -0.0005]}
+                    />
 
-                <Stack cardScene={stackCard} />
+                    <Stack cardScene={stackCard} />
+                  </group>
+                </group>
               </group>
             </group>
           </group>
