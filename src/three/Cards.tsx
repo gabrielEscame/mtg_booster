@@ -222,7 +222,7 @@ const Cards = ({ progress }: CardsProps) => {
 
     // Z rotation
 
-    const rotationStart = 0.62
+    const rotationStart = 0.58
     const rotationEnd = 0.65
 
     const rotationProgress = THREE.MathUtils.clamp(
