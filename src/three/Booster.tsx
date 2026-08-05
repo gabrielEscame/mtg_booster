@@ -39,7 +39,6 @@ function Booster({ progress }: { progress: number }) {
     const node = ref.current
     if (!node) return
 
-    console.log({ progress })
     const startRiseAnimation = 0
     const endRiseAnimation = 0.1
 

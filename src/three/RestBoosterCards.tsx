@@ -1,11 +1,11 @@
 import { useGLTF } from '@react-three/drei'
 
-import { useRef } from 'react'
+import { useRef, type RefObject } from 'react'
 import * as THREE from 'three'
 import { useFrame } from '@react-three/fiber'
 import { updateIdleAnimaation, updateMouseAnimation } from './utils'
 
-const RestBoosterCards = () => {
+const RestBoosterCards = ({ progress }: { progress: number }) => {
   const { scene: azogCard } = useGLTF('/models/azog_card.glb')
   const { scene: bifurCard } = useGLTF('/models/bifur_card.glb')
   const { scene: bilboCard } = useGLTF('/models/bilbo_card.glb')
@@ -34,7 +34,8 @@ const RestBoosterCards = () => {
   const warRefIdle = useRef<THREE.Group | null>(null)
   const whisperRefIdle = useRef<THREE.Group | null>(null)
 
-  const RestBoosterCardsMouseRef = useRef<THREE.Group | null>(null)
+  const restBoosterCardsMouseRef = useRef<THREE.Group | null>(null)
+  const restBoosterCardsAnimationRef = useRef<THREE.Group | null>(null)
 
   const REST_OF_BOOSTER_CARDS = [
     { object: azogCard, idleRef: azogRefIdle },
@@ -59,7 +60,37 @@ const RestBoosterCards = () => {
   const restBoosterCardsSpacing = 0.07
   const restBoosterCardsStart = -0.1
 
+  const updateScrollAnimation = ({
+    ref,
+    progress
+  }: {
+    ref: RefObject<THREE.Group<THREE.Object3DEventMap> | null>
+    progress: number
+  }) => {
+    const node = ref.current
+
+    if (!node) return
+
+    const start = 0.2
+    const end = 1
+
+    const animationProgress = THREE.MathUtils.clamp(
+      (progress - start) / (end - start),
+      0,
+      1
+    )
+
+    const distance = -0.65
+
+    const easeInProgress = animationProgress ** 1.2
+    const targetX = easeInProgress * distance
+
+    node.position.x = THREE.MathUtils.lerp(node.position.x, targetX, 0.05)
+  }
+
   useFrame(({ pointer, clock }) => {
+    if (!restBoosterCardsAnimationRef || !restBoosterCardsMouseRef) return
+
     REST_OF_BOOSTER_CARDS.forEach(({ idleRef }, index) => {
       updateIdleAnimaation({
         ref: idleRef,
@@ -70,31 +101,33 @@ const RestBoosterCards = () => {
     })
 
     updateMouseAnimation({
-      ref: RestBoosterCardsMouseRef,
+      ref: restBoosterCardsMouseRef,
       pointer,
       strength: 0.1
     })
+
+    updateScrollAnimation({ ref: restBoosterCardsAnimationRef, progress })
   })
 
   return (
-    <group ref={RestBoosterCardsMouseRef}>
-      {REST_OF_BOOSTER_CARDS.map(({ object, idleRef }, idx) => (
-        <group ref={idleRef}>
-          {/* <group ref={mouseRef}> */}
-          <primitive
-            key={idx}
-            object={object}
-            scale={1}
-            position={[
-              restBoosterCardsStart + idx * restBoosterCardsSpacing,
-              -0.03,
-              0
-            ]}
-            rotation={[0, 0, 0]}
-          />
-        </group>
-        // </group>
-      ))}
+    <group ref={restBoosterCardsAnimationRef}>
+      <group ref={restBoosterCardsMouseRef}>
+        {REST_OF_BOOSTER_CARDS.map(({ object, idleRef }, idx) => (
+          <group key={idx} ref={idleRef}>
+            <primitive
+              key={idx}
+              object={object}
+              scale={1}
+              position={[
+                restBoosterCardsStart + idx * restBoosterCardsSpacing,
+                -0.03,
+                0
+              ]}
+              rotation={[0, 0, 0]}
+            />
+          </group>
+        ))}
+      </group>
     </group>
   )
 }

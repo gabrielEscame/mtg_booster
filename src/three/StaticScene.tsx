@@ -2,10 +2,48 @@ import { Canvas } from '@react-three/fiber'
 import { Environment } from '@react-three/drei'
 
 import RestBoosterCards from './RestBoosterCards'
+import { useEffect, useState, type RefObject } from 'react'
+import * as THREE from 'three'
 
-const Scene = () => {
+const Scene = ({
+  cardsGroupRef
+}: {
+  cardsGroupRef: RefObject<HTMLDivElement | null>
+}) => {
+  const [progress, setProgress] = useState(0)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const section = cardsGroupRef.current
+
+      if (!section) return
+
+      const rect = section.getBoundingClientRect()
+
+      const scrollDistance = section.offsetHeight - window.innerHeight
+
+      const currentScroll = -rect.top
+
+      const progress = THREE.MathUtils.clamp(
+        currentScroll / scrollDistance,
+        0,
+        1
+      )
+
+      setProgress(progress)
+    }
+
+    window.addEventListener('scroll', handleScroll)
+
+    handleScroll()
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
+
   return (
-    <div className="absolute h-screen w-screen top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 z-20">
+    <div className="absolute h-screen w-screen inset-0 z-20">
       <Canvas
         camera={{
           position: [0, 0, 0.3],
@@ -16,7 +54,7 @@ const Scene = () => {
 
         <directionalLight position={[3, 4, 5]} intensity={0.5} />
 
-        <RestBoosterCards />
+        <RestBoosterCards progress={progress} />
 
         <Environment preset="studio" environmentIntensity={0.4} />
       </Canvas>
