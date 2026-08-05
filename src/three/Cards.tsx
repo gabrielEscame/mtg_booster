@@ -210,7 +210,7 @@ const Cards = ({ progress }: CardsProps) => {
 
     const easeInProgress = animationProgress ** 3
 
-    const fallDistance = -0.06
+    const fallDistance = -0.08
     const repositionDitance = -0.115
 
     const targetY = easeInProgress * fallDistance
