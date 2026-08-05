@@ -1,4 +1,5 @@
 import Scene from './three/Scene'
+import StaticScene from './three/StaticScene'
 
 import Hero from './components/Hero'
 import MythicSection from './components/MythicSection'
@@ -18,7 +19,11 @@ export default function App() {
         <MythicSection />
         <RareSection />
       </div>
-      <CardsSection />
+
+      <div className="relative">
+        <StaticScene />
+        <CardsSection />
+      </div>
     </main>
   )
 }

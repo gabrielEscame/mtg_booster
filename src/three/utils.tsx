@@ -3,16 +3,18 @@ import * as THREE from 'three'
 const updateIdleAnimaation = ({
   ref,
   clock,
-  strength = 1
+  strength = 1,
+  phaseOut = 0
 }: {
   ref: React.RefObject<THREE.Group | null>
   clock: THREE.Clock
   strength?: number
+  phaseOut?: number
 }) => {
   const node = ref.current
   if (!node) return
 
-  const elapsedTime = clock.getElapsedTime()
+  const elapsedTime = clock.getElapsedTime() + phaseOut
 
   const idleXTranslationAmplitude = 0.0015
   const idleXTranslationSpeed = 4
