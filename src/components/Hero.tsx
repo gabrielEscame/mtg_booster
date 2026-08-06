@@ -10,13 +10,20 @@ const Hero = () => {
     offset: ['start start', 'end start']
   })
 
-  const gradientStop = useTransform(
+  const gradientAnimation = useTransform(
     scrollYProgress,
     [0, 0.3],
     ['35%', '150%'],
     {
       ease: easeIn
     }
+  )
+
+  const scrollOpacityAnimation = useTransform(
+    scrollYProgress,
+    [0, 1],
+    [0.6, 0],
+    { clamp: true, ease: easeIn }
   )
 
   return (
@@ -31,9 +38,9 @@ const Hero = () => {
         className="absolute inset-0 z-10"
         style={
           {
-            '--gradient-stop': gradientStop,
+            '--gradient-animation': gradientAnimation,
             background:
-              'linear-gradient(to top, rgba(0, 0, 0, 1) 0%, transparent var(--gradient-stop))'
+              'linear-gradient(to top, rgba(0, 0, 0, 1) 0%, transparent var(--gradient-animation))'
           } as React.CSSProperties
         }
       />
@@ -60,11 +67,16 @@ const Hero = () => {
         </p>
       </FadeUp>
 
-      <div className="absolute bottom-[50px] left-1/2 z-10 flex -translate-x-1/2 flex-col items-center opacity-60">
+      <motion.div
+        className="absolute bottom-[50px] left-1/2 z-10 flex -translate-x-1/2 flex-col items-center"
+        style={{
+          opacity: scrollOpacityAnimation
+        }}
+      >
         <span className="block h-[67px] w-[1px] bg-[linear-gradient(to_bottom,transparent,var(--color-caption))]" />
 
         <p className="text-caption mt-[12px] text-[0.7rem]">SCROLL TO OPEN</p>
-      </div>
+      </motion.div>
     </section>
   )
 }
