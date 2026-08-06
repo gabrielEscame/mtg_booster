@@ -1,5 +1,6 @@
 import { motion, useScroll, useTransform, easeIn } from 'motion/react'
 import { useRef } from 'react'
+import FadeUp from './animation/FadeUp'
 
 const Hero = () => {
   const heroRef = useRef<HTMLElement | null>(null)
@@ -9,9 +10,14 @@ const Hero = () => {
     offset: ['start start', 'end start']
   })
 
-  const gradientStop = useTransform(scrollYProgress, [0, 0.3], ['35%', '150%'], {
-    ease: easeIn
-  })
+  const gradientStop = useTransform(
+    scrollYProgress,
+    [0, 0.3],
+    ['35%', '150%'],
+    {
+      ease: easeIn
+    }
+  )
 
   return (
     <section
@@ -33,7 +39,7 @@ const Hero = () => {
       />
 
       {/* Hero content */}
-      <div className="absolute top-[55px] left-[67px] z-30 flex w-[460px] flex-col justify-center">
+      <FadeUp className="absolute top-[55px] left-[67px] z-30 flex w-[460px] flex-col justify-center">
         <img
           src="/images/mtg_logo.webp"
           alt="Magic: The Gathering"
@@ -52,7 +58,7 @@ const Hero = () => {
           Open your boosters, reveal the cards within, and see where the road
           takes you.
         </p>
-      </div>
+      </FadeUp>
 
       <div className="absolute bottom-[50px] left-1/2 z-10 flex -translate-x-1/2 flex-col items-center opacity-60">
         <span className="block h-[67px] w-[1px] bg-[linear-gradient(to_bottom,transparent,var(--color-caption))]" />

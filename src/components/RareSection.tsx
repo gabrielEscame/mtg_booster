@@ -1,3 +1,5 @@
+import FadeUp from './animation/FadeUp'
+
 const RareSection = () => {
   return (
     <section className="relative h-screen w-full bg-[url('/images/rare_bg.webp')] bg-no-repeat bg-[length:auto_100%] bg-left lg:bg-[length:205%]">
@@ -5,7 +7,7 @@ const RareSection = () => {
       <div className="absolute inset-0 z-10 bg-[radial-gradient(circle_at_center,_rgba(0,0,0,0.7)_0%,_rgba(0,0,0,0)_70%)]" />
 
       {/* Mythic content */}
-      <div className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 z-20 flex flex-col items-end w-[70%]">
+      <FadeUp className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 z-20 flex flex-col items-end w-[70%]">
         <div className="w-content flex flex-col justify-center">
           <h1 className="text-title max-w-[470px]">
             RADAGAST <br /> OF RHOSGOBEL
@@ -26,7 +28,7 @@ const RareSection = () => {
             the adventures ahead.
           </p>
         </div>
-      </div>
+      </FadeUp>
     </section>
   )
 }

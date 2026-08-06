@@ -1,3 +1,5 @@
+import FadeUp from "./animation/FadeUp"
+
 const MythicSection = () => {
   return (
     <section className="relative h-screen w-full bg-[url('/images/mythic_bg.webp')] bg-no-repeat bg-cover bg-center">
@@ -7,7 +9,7 @@ const MythicSection = () => {
       <div className="absolute inset-0 z-10 bg-[linear-gradient(to_bottom,_rgba(0,0,0,1)_0%,_rgba(102,102,102,0)_50%)]" />
 
       {/* Mythic content */}
-      <div className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 z-20 flex w-[70%] flex-col justify-center">
+      <FadeUp className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 z-20 flex w-[70%] flex-col justify-center">
         <h1 className="text-title max-w-[470px]">
           SMAUG <br />
           THE MAGNIFICENT
@@ -26,7 +28,7 @@ const MythicSection = () => {
           hoard is matched only by his hunger for conquest. Draw near, if you
           dare, and claim a legend worthy of any adventurer’s collection.
         </p>
-      </div>
+      </FadeUp>
     </section>
   )
 }
