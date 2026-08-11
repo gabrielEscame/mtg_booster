@@ -73,7 +73,7 @@ const Stack = ({ cardScene }: { cardScene: Group<Object3DEventMap> }) => {
         <primitive
           key={index}
           object={cardScene.clone()}
-          scale={1}
+          scale={20}
           position={[offset.x, offset.y, -(stackStart + index * cardSpacing)]}
           rotation={[0, 0, offset.rotationZ]}
         />

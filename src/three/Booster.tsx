@@ -1,5 +1,5 @@
 import { useFrame } from '@react-three/fiber'
-import { useGLTF } from '@react-three/drei'
+import { useGLTF, Sparkles } from '@react-three/drei'
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 
@@ -8,6 +8,7 @@ import {
   updateMouseAnimation,
   updateOpacity
 } from './utils'
+import GlowGroup from './GlowGroup'
 
 function Booster({ progress }: { progress: number }) {
   const { scene } = useGLTF('/models/booster.glb')
@@ -42,7 +43,7 @@ function Booster({ progress }: { progress: number }) {
     const startRiseAnimation = 0
     const endRiseAnimation = 0.1
 
-    const riseDistance = 0.04
+    const riseDistance = 0.8
 
     const riseProgress = THREE.MathUtils.clamp(
       (progress - startRiseAnimation) / (endRiseAnimation - startRiseAnimation),
@@ -53,7 +54,7 @@ function Booster({ progress }: { progress: number }) {
     const startFallAnimation = 0.15
     const endFallAnimation = 0.2
 
-    const fallDistance = 0.2
+    const fallDistance = 4
 
     const fallProgress = THREE.MathUtils.clamp(
       (progress - startFallAnimation) / (endFallAnimation - startFallAnimation),
@@ -126,11 +127,32 @@ function Booster({ progress }: { progress: number }) {
     updateScrollAnimation({ ref: animationRef, progress })
   })
 
+  const startFadeAnimation = 0.16
+  const endFadeAnimation = 0.17
+
+  const fadeProgress = THREE.MathUtils.clamp(
+    (progress - startFadeAnimation) / (endFadeAnimation - startFadeAnimation),
+    0,
+    1
+  )
+
+  const targetOpacity = 1 - fadeProgress
+
   return (
-    <group ref={animationRef} position={[0.08, 0, 0]}>
+    <group ref={animationRef} position={[1.2, 0, 0]}>
+      <Sparkles
+        opacity={targetOpacity}
+        count={40}
+        scale={[1.9, 2.5, 3]}
+        size={4}
+        speed={0.8}
+        color={'#99d4fc'}
+      />
+
+      <GlowGroup />
       <group ref={mouseRef}>
         <group ref={idleRef}>
-          <primitive object={scene} scale={1} />
+          <primitive scale={20} object={scene} />
         </group>
       </group>
     </group>

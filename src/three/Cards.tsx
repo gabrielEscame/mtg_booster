@@ -62,7 +62,7 @@ const Cards = ({ progress }: CardsProps) => {
     const starRiseAnimation = 0.13
     const endRiseAnimation = 0.17
 
-    const riseDistance = 0.06
+    const riseDistance = 1.2
 
     const riseProgress = THREE.MathUtils.clamp(
       (progress - starRiseAnimation) / (endRiseAnimation - starRiseAnimation),
@@ -75,7 +75,7 @@ const Cards = ({ progress }: CardsProps) => {
     const startFallAnimation = 0.17
     const endFallAnimation = 0.23
 
-    const fallDistance = 0.06
+    const fallDistance = 1.2
 
     const fallProgress = THREE.MathUtils.clamp(
       (progress - startFallAnimation) / (endFallAnimation - startFallAnimation),
@@ -120,8 +120,8 @@ const Cards = ({ progress }: CardsProps) => {
     node.position.z = THREE.MathUtils.lerp(node.position.z, targetZ, 0.05)
 
     // X movement
-    const initialX = 0.08
-    const finalX = 0.06
+    const initialX = 1.2
+    const finalX = 1
 
     const targetX = THREE.MathUtils.lerp(
       initialX,
@@ -149,7 +149,7 @@ const Cards = ({ progress }: CardsProps) => {
       1
     )
 
-    const continuedFallDistance = 0.3
+    const continuedFallDistance = 6
 
     const mythicCounterY = mythicLockProgress * continuedFallDistance
 
@@ -181,7 +181,7 @@ const Cards = ({ progress }: CardsProps) => {
     )
 
     // Must match the mythic counter distance
-    const parentFallDistance = 0.3
+    const parentFallDistance = 6
 
     const targetY = counterProgress * parentFallDistance
 
@@ -210,8 +210,8 @@ const Cards = ({ progress }: CardsProps) => {
 
     const easeInProgress = animationProgress ** 3
 
-    const fallDistance = -0.08
-    const repositionDitance = -0.115
+    const fallDistance = -1.6
+    const repositionDitance = -2.2
 
     const targetY = easeInProgress * fallDistance
     const targetX = easeInProgress * repositionDitance
@@ -266,7 +266,7 @@ const Cards = ({ progress }: CardsProps) => {
     )
 
     // Must match the mythic counter distance
-    const parentFallDistance = 0.15
+    const parentFallDistance = 3
 
     const targetY = counterProgress * parentFallDistance
 
@@ -320,11 +320,11 @@ const Cards = ({ progress }: CardsProps) => {
 
   return (
     <group ref={cardsVisibilityRef}>
-      <group ref={cardsScrollRef} position={[0.08, 0, 0]}>
+      <group ref={cardsScrollRef} position={[1.7, 0, 0]}>
         <group ref={cardsMouseRef}>
           <group ref={cardsIdleRef}>
             <group ref={mythicCardRef}>
-              <primitive object={mythicCard} scale={1} />
+              <primitive object={mythicCard} scale={20} />
             </group>
 
             <group ref={rareAndStackCounterRef}>
@@ -333,7 +333,7 @@ const Cards = ({ progress }: CardsProps) => {
                   <group ref={rareAndStackIdleRef}>
                     <primitive
                       object={rareCard}
-                      scale={1}
+                      scale={20}
                       position={[0, 0, -0.0005]}
                     />
 

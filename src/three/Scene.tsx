@@ -32,19 +32,19 @@ const Scene = () => {
     <div className="fixed inset-0 z-20">
       <Canvas
         camera={{
-          position: [0, 0, 0.3],
+          position: [0, 0, 5.8],
           fov: 40
         }}
       >
-        <ambientLight intensity={0.05} />
+        <ambientLight intensity={0.03} />
 
-        <directionalLight position={[3, 4, 5]} intensity={0.5} />
+        <directionalLight position={[3, 4, 5]} intensity={0.4} />
 
         <Booster progress={scrollProgress} />
 
         <Cards progress={scrollProgress} />
 
-        <Environment preset="studio" environmentIntensity={0.4} />
+        <Environment preset="studio" environmentIntensity={0.35} />
       </Canvas>
     </div>
   )
