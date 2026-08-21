@@ -1,8 +1,12 @@
-import FadeUp from "./animation/FadeUp"
+import type { RefObject } from 'react'
+import FadeUp from './animation/FadeUp'
 
-const MythicSection = () => {
+const MythicSection = ({ ref }: { ref: RefObject<HTMLElement | null> }) => {
   return (
-    <section className="relative h-screen w-full bg-[url('/images/mythic_bg.webp')] bg-no-repeat bg-cover bg-center">
+    <section
+      ref={ref}
+      className="relative h-screen w-full bg-[url('/images/mythic_bg.webp')] bg-no-repeat bg-cover bg-center"
+    >
       {/* Background gradients */}
       <div className="absolute inset-0 z-10 opacity-80 bg-[radial-gradient(circle_at_center,_rgba(102,102,102,0)_0%,_rgba(0,0,0,0.7)_70%)]" />
 

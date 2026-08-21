@@ -1,12 +1,12 @@
 import { Canvas } from '@react-three/fiber'
 import { Environment } from '@react-three/drei'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type RefObject } from 'react'
 import * as THREE from 'three'
 
 import Booster from './Booster'
 import Cards from './Cards'
 
-const Scene = ({animationSection} : {animationSection: HTMLDivElement | null}) => {
+const Scene = ({sectionRef} : {sectionRef: RefObject<HTMLDivElement | null>}) => {
   const [scrollProgress, setScrollProgress] = useState(0)
 
   useEffect(() => {
@@ -40,9 +40,9 @@ const Scene = ({animationSection} : {animationSection: HTMLDivElement | null}) =
 
         <directionalLight position={[3, 4, 5]} intensity={0.4} />
 
-        <Booster animationSection={animationSection}/>
+        <Booster sectionRef={sectionRef}/>
 
-        <Cards progress={scrollProgress} />
+        {/* <Cards progress={scrollProgress} /> */}
 
         <Environment preset="studio" environmentIntensity={0.35} />
       </Canvas>

@@ -1,5 +1,5 @@
 import { useGLTF } from '@react-three/drei'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, type RefObject } from 'react'
 import * as THREE from 'three'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -10,9 +10,9 @@ import useIdleAnimation from './hooks/useIdleAnimation'
 gsap.registerPlugin(ScrollTrigger)
 
 function Booster({
-  animationSection
+  sectionRef
 }: {
-  animationSection: HTMLDivElement | null
+  sectionRef: RefObject<HTMLDivElement | null>
 }) {
   const { scene } = useGLTF('/models/booster.glb')
   const animationRef = useRef<THREE.Group | null>(null)
@@ -27,8 +27,8 @@ function Booster({
     const tl = gsap.timeline({ paused: true })
 
     ScrollTrigger.create({
-      trigger: animationSection,
-      start: '15% top',
+      trigger: sectionRef.current,
+      start: '10% top',
       onEnter: () => {
         console.log('PLAY')
         tl.play()
