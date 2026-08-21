@@ -6,7 +6,7 @@ import * as THREE from 'three'
 import Booster from './Booster'
 import Cards from './Cards'
 
-const Scene = () => {
+const Scene = ({animationSection} : {animationSection: HTMLDivElement | null}) => {
   const [scrollProgress, setScrollProgress] = useState(0)
 
   useEffect(() => {
@@ -40,7 +40,7 @@ const Scene = () => {
 
         <directionalLight position={[3, 4, 5]} intensity={0.4} />
 
-        <Booster progress={scrollProgress} />
+        <Booster animationSection={animationSection}/>
 
         <Cards progress={scrollProgress} />
 

@@ -1,155 +1,124 @@
-import { useFrame } from '@react-three/fiber'
-import { useGLTF, Sparkles } from '@react-three/drei'
+import { useGLTF } from '@react-three/drei'
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-import {
-  updateIdleAnimaation,
-  updateMouseAnimation,
-  updateOpacity
-} from './utils'
-import GlowGroup from './GlowGroup'
+import useMouseAnimation from './hooks/useMouseAnimation'
+import useIdleAnimation from './hooks/useIdleAnimation'
 
-function Booster({ progress }: { progress: number }) {
+gsap.registerPlugin(ScrollTrigger)
+
+function Booster({
+  animationSection
+}: {
+  animationSection: HTMLDivElement | null
+}) {
   const { scene } = useGLTF('/models/booster.glb')
   const animationRef = useRef<THREE.Group | null>(null)
   const mouseRef = useRef<THREE.Group | null>(null)
   const idleRef = useRef<THREE.Group | null>(null)
 
   useEffect(() => {
-    scene.traverse((object) => {
-      if (!(object instanceof THREE.Mesh)) return
+    if (!animationRef.current) return
 
-      const materials = Array.isArray(object.material)
-        ? object.material
-        : [object.material]
+    const node = animationRef.current
 
-      materials.forEach((material) => {
-        material.transparent = true
-      })
+    const tl = gsap.timeline({ paused: true })
+
+    ScrollTrigger.create({
+      trigger: animationSection,
+      start: '15% top',
+      onEnter: () => {
+        console.log('PLAY')
+        tl.play()
+      }
     })
-  }, [scene])
 
-  const updateScrollAnimation = ({
-    ref,
-    progress
-  }: {
-    ref: React.RefObject<THREE.Group | null>
-    progress: number
-  }) => {
-    const node = ref.current
-    if (!node) return
+    // Rise
+    tl.to(node.position, {
+      y: 0.8,
+      duration: 0.5,
+      ease: 'power3.out'
+    })
 
-    const startRiseAnimation = 0
-    const endRiseAnimation = 0.1
-
-    const riseDistance = 0.8
-
-    const riseProgress = THREE.MathUtils.clamp(
-      (progress - startRiseAnimation) / (endRiseAnimation - startRiseAnimation),
-      0,
-      1
+    tl.to(
+      node.rotation,
+      {
+        y: Math.PI,
+        duration: 0.5,
+        ease: 'power1.out'
+      },
+      '<'
     )
 
-    const startFallAnimation = 0.15
-    const endFallAnimation = 0.2
-
-    const fallDistance = 4
-
-    const fallProgress = THREE.MathUtils.clamp(
-      (progress - startFallAnimation) / (endFallAnimation - startFallAnimation),
-      0,
-      1
+    // Fall
+    tl.to(
+      node.position,
+      {
+        y: -5,
+        duration: 0.6,
+        ease: 'power2.in'
+      },
+      '>+=0.07'
     )
 
-    const easeInFallProgress = fallProgress ** 1.08
-
-    const targetY =
-      riseProgress * riseDistance - easeInFallProgress * fallDistance
-
-    node.position.y = THREE.MathUtils.lerp(node.position.y, targetY, 0.04)
-
-    const startRotationAnimation = 0.18
-    const endRotationAnimation = 0.4
-
-    const rotationProgress = THREE.MathUtils.clamp(
-      (progress - startRotationAnimation) /
-        (endRotationAnimation - startRotationAnimation),
-      0,
-      1
+    tl.to(
+      node.rotation,
+      {
+        z: -Math.PI * 1.5,
+        duration: 0.8,
+        ease: 'power2.in'
+      },
+      '<+=0.12'
     )
 
-    const easeInRotationProgress = rotationProgress ** 1.1
-
-    const fallRotation = Math.PI
-    const targetBaseRotation = easeInRotationProgress * fallRotation
-
-    node.rotation.z = THREE.MathUtils.lerp(
-      node.rotation.z,
-      -(targetBaseRotation * 2),
-      0.04
+    tl.to(
+      node.rotation,
+      {
+        x: Math.PI,
+        duration: 0.8,
+        ease: 'power2.in'
+      },
+      '<'
     )
 
-    node.rotation.x = THREE.MathUtils.lerp(
-      node.rotation.x,
-      targetBaseRotation * 4,
-      0.04
+    tl.to(
+      node.position,
+      {
+        x: 12,
+        duration: 0.6,
+        ease: 'power3.in'
+      },
+      '<+=0.01'
     )
 
-    const startFadeAnimation = 0.16
-    const endFadeAnimation = 0.2
-
-    const fadeProgress = THREE.MathUtils.clamp(
-      (progress - startFadeAnimation) / (endFadeAnimation - startFadeAnimation),
-      0,
-      1
+    tl.to(
+      node.position,
+      {
+        z: -3,
+        duration: 0.5,
+        ease: 'power2.in'
+      },
+      '<'
     )
 
-    const targetOpacity = 1 - fadeProgress
+    window.addEventListener('keydown', (event) => {
+      if (event.code === 'ArrowUp') {
+        tl.restart()
+      }
+    })
 
-    updateOpacity({ object: scene, opacity: targetOpacity })
-  }
+    return () => {
+      tl.kill()
+    }
+  }, [])
 
-  useFrame(({ pointer, clock }) => {
-    if (!animationRef.current || !mouseRef.current || !idleRef.current) return
-
-    const isCardRevelTimeline = progress >= 0.1 && progress <= 0.2
-
-    const motionStrength = isCardRevelTimeline ? 0 : 1
-
-    // Mouse interaction for rotation
-    updateMouseAnimation({ ref: mouseRef, pointer, strength: motionStrength })
-
-    // Idle animation
-    updateIdleAnimaation({ ref: idleRef, clock, strength: motionStrength })
-
-    // Scroll animation based on progress
-    updateScrollAnimation({ ref: animationRef, progress })
-  })
-
-  const startFadeAnimation = 0.16
-  const endFadeAnimation = 0.17
-
-  const fadeProgress = THREE.MathUtils.clamp(
-    (progress - startFadeAnimation) / (endFadeAnimation - startFadeAnimation),
-    0,
-    1
-  )
-
-  const targetOpacity = 1 - fadeProgress
+  useMouseAnimation(mouseRef)
+  useIdleAnimation(idleRef)
 
   return (
     <group ref={animationRef} position={[1.2, 0, 0]}>
-      <Sparkles
-        opacity={targetOpacity}
-        count={40}
-        scale={[1.9, 2.5, 3]}
-        size={4}
-        speed={0.8}
-        color={'#99d4fc'}
-      />
-
-      <GlowGroup />
       <group ref={mouseRef}>
         <group ref={idleRef}>
           <primitive scale={20} object={scene} />

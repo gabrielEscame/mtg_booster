@@ -10,13 +10,14 @@ import { useRef } from 'react'
 
 export default function App() {
   const cardsGroupRef = useRef<HTMLDivElement | null>(null)
+  const sectionRef = useRef<HTMLDivElement | null>(null)
 
   return (
     <main className="app">
-      <div className="relative">
+      <div className="relative" ref={sectionRef}>
         {/* 3D scene */}
 
-        <Scene />
+        <Scene animationSection={sectionRef.current}/>
 
         {/* Sections */}
         <Hero />
