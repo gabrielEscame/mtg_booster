@@ -17,11 +17,22 @@ export default function App() {
   const mythicSectionRef = useRef<HTMLElement | null>(null)
 
   const [boosterNode, setBoosterNode] = useState<Group | null>(null)
-  
+  const [cardsNode, setCardsNode] = useState<Group | null>(null)
+  const [, setMythicCardNode] = useState<Group | null>(null)
+  const [, setRareStackNode] = useState<Group | null>(null)
+
+  const sceneProps = {
+    setBoosterNode,
+    setMythicCardNode,
+    setRareStackNode,
+    setCardsNode
+  }
+
   useHeroTimeline({
     animationContainerRef,
     mythicSectionRef,
-    boosterNode
+    boosterNode,
+    cardsNode
   })
 
   return (
@@ -29,7 +40,7 @@ export default function App() {
       <div className="relative" ref={animationContainerRef}>
         {/* 3D scene */}
 
-        <Scene setBoosterNode={setBoosterNode} />
+        <Scene sceneProps={sceneProps} />
 
         {/* Sections */}
         <Hero />

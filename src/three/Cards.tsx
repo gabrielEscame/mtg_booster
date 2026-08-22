@@ -1,347 +1,332 @@
 import { useGLTF } from '@react-three/drei'
 import { useRef } from 'react'
-import { useFrame, type Viewport } from '@react-three/fiber'
 import * as THREE from 'three'
 
-import { updateIdleAnimaation, updateMouseAnimation } from './utils'
-
 import Stack from './Stack'
+import type { SetGroup } from '../types'
+import useMouseAnimation from '../hooks/useMouseAnimation'
+import useIdleAnimation from '../hooks/useIdleAnimation'
 
 interface CardsProps {
-  progress: number
+  setMythicCardNode: SetGroup
+  setRareStackNode: SetGroup
+  setCardsNode: SetGroup
 }
 
-const Cards = ({ progress }: CardsProps) => {
+const Cards = ({ cardsProps }: { cardsProps: CardsProps }) => {
+  const { setMythicCardNode, setCardsNode } = cardsProps
+
   const { scene: mythicCard } = useGLTF('/models/mythic_card.glb')
-  const { scene: rareCard } = useGLTF('/models/rare_card.glb')
   const { scene: stackCard } = useGLTF('/models/rare_card.glb')
 
-  const cardsVisibilityRef = useRef<THREE.Group | null>(null)
   const cardsMouseRef = useRef<THREE.Group | null>(null)
   const cardsIdleRef = useRef<THREE.Group | null>(null)
-  const cardsScrollRef = useRef<THREE.Group | null>(null)
 
   const rareAndStackIdleRef = useRef<THREE.Group | null>(null)
-  const rareAndStackCounterRef = useRef<THREE.Group | null>(null)
-  const rareAndStackAnimationRef = useRef<THREE.Group | null>(null)
-  const rareAndStackLastCounterRef = useRef<THREE.Group | null>(null)
 
-  const mythicCardRef = useRef<THREE.Group | null>(null)
+  useMouseAnimation(cardsMouseRef)
+  useIdleAnimation(cardsIdleRef)
 
-  const updateCardsVisibility = ({
-    ref,
-    progress
-  }: {
-    ref: React.RefObject<THREE.Group | null>
-    progress: number
-  }) => {
-    const node = ref.current
+  // const updateCardsVisibility = ({
+  //   ref,
+  //   progress
+  // }: {
+  //   ref: React.RefObject<THREE.Group | null>
+  //   progress: number
+  // }) => {
+  //   const node = ref.current
 
-    if (!node) return
+  //   if (!node) return
 
-    const showCards = 0.16
+  //   const showCards = 0.16
 
-    const isVisible = progress >= showCards
+  //   const isVisible = progress >= showCards
 
-    node.visible = isVisible
-  }
+  //   node.visible = isVisible
+  // }
 
-  const updateCardsScrollAnimation = ({
-    ref,
-    progress,
-    viewport
-  }: {
-    ref: React.RefObject<THREE.Group | null>
-    progress: number
-    viewport: Viewport
-  }) => {
-    const node = ref.current
+  // const updateCardsScrollAnimation = ({
+  //   ref,
+  //   progress,
+  //   viewport
+  // }: {
+  //   ref: React.RefObject<THREE.Group | null>
+  //   progress: number
+  //   viewport: Viewport
+  // }) => {
+  //   const node = ref.current
 
-    if (!node) return
+  //   if (!node) return
 
-    const starRiseAnimation = 0.13
-    const endRiseAnimation = 0.17
+  //   const starRiseAnimation = 0.13
+  //   const endRiseAnimation = 0.17
 
-    const riseDistance = 1.2
+  //   const riseDistance = 1.2
 
-    const riseProgress = THREE.MathUtils.clamp(
-      (progress - starRiseAnimation) / (endRiseAnimation - starRiseAnimation),
-      0,
-      1
-    )
+  //   const riseProgress = THREE.MathUtils.clamp(
+  //     (progress - starRiseAnimation) / (endRiseAnimation - starRiseAnimation),
+  //     0,
+  //     1
+  //   )
 
-    const easeInRiseProgress = riseProgress ** 3
+  //   const easeInRiseProgress = riseProgress ** 3
 
-    const startFallAnimation = 0.17
-    const endFallAnimation = 0.23
+  //   const startFallAnimation = 0.17
+  //   const endFallAnimation = 0.23
 
-    const fallDistance = 1.2
+  //   const fallDistance = 1.2
 
-    const fallProgress = THREE.MathUtils.clamp(
-      (progress - startFallAnimation) / (endFallAnimation - startFallAnimation),
-      0,
-      1
-    )
+  //   const fallProgress = THREE.MathUtils.clamp(
+  //     (progress - startFallAnimation) / (endFallAnimation - startFallAnimation),
+  //     0,
+  //     1
+  //   )
 
-    const easeInFallProgress = fallProgress ** 4
+  //   const easeInFallProgress = fallProgress ** 4
 
-    const targetY =
-      easeInRiseProgress * riseDistance - easeInFallProgress * fallDistance
+  //   const targetY =
+  //     easeInRiseProgress * riseDistance - easeInFallProgress * fallDistance
 
-    node.position.y = THREE.MathUtils.lerp(node.position.y, targetY, 0.05)
+  //   node.position.y = THREE.MathUtils.lerp(node.position.y, targetY, 0.05)
 
-    const startApproachAnimation = 0.18
-    const endApproachAnimation = 0.3
+  //   const startApproachAnimation = 0.18
+  //   const endApproachAnimation = 0.3
 
-    const approachDistance = viewport.width * 0.2
-    const approachRotation = Math.PI
+  //   const approachDistance = viewport.width * 0.2
+  //   const approachRotation = Math.PI
 
-    const approachProgress = THREE.MathUtils.clamp(
-      (progress - startApproachAnimation) /
-        (endApproachAnimation - startApproachAnimation),
-      0,
-      1
-    )
+  //   const approachProgress = THREE.MathUtils.clamp(
+  //     (progress - startApproachAnimation) /
+  //       (endApproachAnimation - startApproachAnimation),
+  //     0,
+  //     1
+  //   )
 
-    const easeInApproachProgress = approachProgress ** 5
+  //   const easeInApproachProgress = approachProgress ** 5
 
-    // Z rotation
-    const targerZRotatiton = easeInApproachProgress * approachRotation
+  //   // Z rotation
+  //   const targerZRotatiton = easeInApproachProgress * approachRotation
 
-    node.rotation.y = THREE.MathUtils.lerp(
-      node.rotation.y,
-      -(targerZRotatiton * 2),
-      0.04
-    )
+  //   node.rotation.y = THREE.MathUtils.lerp(
+  //     node.rotation.y,
+  //     -(targerZRotatiton * 2),
+  //     0.04
+  //   )
 
-    // Z movement
-    const targetZ = easeInApproachProgress * approachDistance
+  //   // Z movement
+  //   const targetZ = easeInApproachProgress * approachDistance
 
-    node.position.z = THREE.MathUtils.lerp(node.position.z, targetZ, 0.05)
+  //   node.position.z = THREE.MathUtils.lerp(node.position.z, targetZ, 0.05)
 
-    // X movement
-    const initialX = 1.2
-    const finalX = 1
+  //   // X movement
+  //   const initialX = 1.2
+  //   const finalX = 1
 
-    const targetX = THREE.MathUtils.lerp(
-      initialX,
-      finalX,
-      easeInApproachProgress
-    )
+  //   const targetX = THREE.MathUtils.lerp(
+  //     initialX,
+  //     finalX,
+  //     easeInApproachProgress
+  //   )
 
-    node.position.x = THREE.MathUtils.lerp(node.position.x, targetX, 0.05)
-  }
+  //   node.position.x = THREE.MathUtils.lerp(node.position.x, targetX, 0.05)
+  // }
 
-  const updateMythicCounterMove = ({
-    ref
-  }: {
-    ref: React.RefObject<THREE.Group | null>
-  }) => {
-    const node = ref.current
+  // const updateMythicCounterMove = ({
+  //   ref
+  // }: {
+  //   ref: React.RefObject<THREE.Group | null>
+  // }) => {
+  //   const node = ref.current
 
-    if (!node) return
+  //   if (!node) return
 
-    const mythicStopProgress = 0.33
+  //   const mythicStopProgress = 0.33
 
-    const mythicLockProgress = THREE.MathUtils.clamp(
-      (progress - mythicStopProgress) / (1 - mythicStopProgress),
-      0,
-      1
-    )
+  //   const mythicLockProgress = THREE.MathUtils.clamp(
+  //     (progress - mythicStopProgress) / (1 - mythicStopProgress),
+  //     0,
+  //     1
+  //   )
 
-    const continuedFallDistance = 6
+  //   const continuedFallDistance = 6
 
-    const mythicCounterY = mythicLockProgress * continuedFallDistance
+  //   const mythicCounterY = mythicLockProgress * continuedFallDistance
 
-    node.position.y = THREE.MathUtils.lerp(node.position.y, mythicCounterY, 0.3)
-  }
+  //   node.position.y = THREE.MathUtils.lerp(node.position.y, mythicCounterY, 0.3)
+  // }
 
-  const updateRareAndStackCounterMove = ({
-    ref,
-    progress
-  }: {
-    ref: React.RefObject<THREE.Group | null>
-    progress: number
-  }) => {
-    const node = ref.current
+  // const updateRareAndStackCounterMove = ({
+  //   ref,
+  //   progress
+  // }: {
+  //   ref: React.RefObject<THREE.Group | null>
+  //   progress: number
+  // }) => {
+  //   const node = ref.current
 
-    if (!node) return
+  //   if (!node) return
 
-    const counterStart = 0.33
-    const counterEnd = 0.5
+  //   const counterStart = 0.33
+  //   const counterEnd = 0.5
 
-    // Stop reproducing the mythic movement after 0.5
-    const cappedProgress = Math.min(progress, counterEnd)
+  //   // Stop reproducing the mythic movement after 0.5
+  //   const cappedProgress = Math.min(progress, counterEnd)
 
-    // Use the same timeline as the mythic animation
-    const counterProgress = THREE.MathUtils.clamp(
-      (cappedProgress - counterStart) / (1 - counterStart),
-      0,
-      1
-    )
+  //   // Use the same timeline as the mythic animation
+  //   const counterProgress = THREE.MathUtils.clamp(
+  //     (cappedProgress - counterStart) / (1 - counterStart),
+  //     0,
+  //     1
+  //   )
 
-    // Must match the mythic counter distance
-    const parentFallDistance = 6
+  //   // Must match the mythic counter distance
+  //   const parentFallDistance = 6
 
-    const targetY = counterProgress * parentFallDistance
+  //   const targetY = counterProgress * parentFallDistance
 
-    node.position.y = THREE.MathUtils.lerp(node.position.y, targetY, 0.3)
-  }
+  //   node.position.y = THREE.MathUtils.lerp(node.position.y, targetY, 0.3)
+  // }
 
-  const updateRareAndStackAnimation = ({
-    ref,
-    progress
-  }: {
-    ref: React.RefObject<THREE.Group | null>
-    progress: number
-  }) => {
-    const node = ref.current
+  // const updateRareAndStackAnimation = ({
+  //   ref,
+  //   progress
+  // }: {
+  //   ref: React.RefObject<THREE.Group | null>
+  //   progress: number
+  // }) => {
+  //   const node = ref.current
 
-    if (!node) return
+  //   if (!node) return
 
-    const start = 0.3
-    const end = 0.65
+  //   const start = 0.3
+  //   const end = 0.65
 
-    const animationProgress = THREE.MathUtils.clamp(
-      (progress - start) / (end - start),
-      0,
-      1
-    )
+  //   const animationProgress = THREE.MathUtils.clamp(
+  //     (progress - start) / (end - start),
+  //     0,
+  //     1
+  //   )
 
-    const easeInProgress = animationProgress ** 3
+  //   const easeInProgress = animationProgress ** 3
 
-    const fallDistance = -1.6
-    const repositionDitance = -2.2
+  //   const fallDistance = -1.6
+  //   const repositionDitance = -2.2
 
-    const targetY = easeInProgress * fallDistance
-    const targetX = easeInProgress * repositionDitance
+  //   const targetY = easeInProgress * fallDistance
+  //   const targetX = easeInProgress * repositionDitance
 
-    node.position.y = THREE.MathUtils.lerp(node.position.y, targetY, 0.05)
+  //   node.position.y = THREE.MathUtils.lerp(node.position.y, targetY, 0.05)
 
-    node.position.x = THREE.MathUtils.lerp(node.position.x, targetX, 0.05)
+  //   node.position.x = THREE.MathUtils.lerp(node.position.x, targetX, 0.05)
 
-    // Z rotation
+  //   // Z rotation
 
-    const rotationStart = 0.58
-    const rotationEnd = 0.65
+  //   const rotationStart = 0.58
+  //   const rotationEnd = 0.65
 
-    const rotationProgress = THREE.MathUtils.clamp(
-      (progress - rotationStart) / (rotationEnd - rotationStart),
-      0,
-      1
-    )
+  //   const rotationProgress = THREE.MathUtils.clamp(
+  //     (progress - rotationStart) / (rotationEnd - rotationStart),
+  //     0,
+  //     1
+  //   )
 
-    const easeInRotationProgress = rotationProgress ** 1.5
+  //   const easeInRotationProgress = rotationProgress ** 1.5
 
-    const targerZRotatiton = easeInRotationProgress * Math.PI
+  //   const targerZRotatiton = easeInRotationProgress * Math.PI
 
-    const isReversingRotation = progress < rotationEnd
+  //   const isReversingRotation = progress < rotationEnd
 
-    const rotationLerp = isReversingRotation ? 0.15 : 0.04
+  //   const rotationLerp = isReversingRotation ? 0.15 : 0.04
 
-    node.rotation.y = THREE.MathUtils.lerp(
-      node.rotation.y,
-      -(targerZRotatiton * 2),
-      rotationLerp
-    )
-  }
+  //   node.rotation.y = THREE.MathUtils.lerp(
+  //     node.rotation.y,
+  //     -(targerZRotatiton * 2),
+  //     rotationLerp
+  //   )
+  // }
 
-  const updateRareAndStackLastCounterMove = ({
-    ref,
-    progress
-  }: {
-    ref: React.RefObject<THREE.Group | null>
-    progress: number
-  }) => {
-    const node = ref.current
+  // const updateRareAndStackLastCounterMove = ({
+  //   ref,
+  //   progress
+  // }: {
+  //   ref: React.RefObject<THREE.Group | null>
+  //   progress: number
+  // }) => {
+  //   const node = ref.current
 
-    if (!node) return
+  //   if (!node) return
 
-    const counterStart = 0.65
+  //   const counterStart = 0.65
 
-    const counterProgress = THREE.MathUtils.clamp(
-      (progress - counterStart) / (1 - counterStart),
-      0,
-      1
-    )
+  //   const counterProgress = THREE.MathUtils.clamp(
+  //     (progress - counterStart) / (1 - counterStart),
+  //     0,
+  //     1
+  //   )
 
-    // Must match the mythic counter distance
-    const parentFallDistance = 3
+  //   // Must match the mythic counter distance
+  //   const parentFallDistance = 3
 
-    const targetY = counterProgress * parentFallDistance
+  //   const targetY = counterProgress * parentFallDistance
 
-    node.position.y = THREE.MathUtils.lerp(node.position.y, targetY, 0.3)
-  }
+  //   node.position.y = THREE.MathUtils.lerp(node.position.y, targetY, 0.3)
+  // }
 
-  useFrame(({ pointer, clock, viewport }) => {
-    if (
-      !cardsMouseRef ||
-      !cardsIdleRef ||
-      !mythicCardRef ||
-      !rareAndStackCounterRef ||
-      !rareAndStackLastCounterRef ||
-      !cardsVisibilityRef
-    )
-      return
+  // useFrame(({ pointer, clock, viewport }) => {
+  //   if (
+  //     !cardsMouseRef ||
+  //     !cardsIdleRef ||
+  //     !mythicCardRef ||
+  //     !rareAndStackCounterRef ||
+  //     !rareAndStackLastCounterRef ||
+  //     !cardsVisibilityRef
+  //   )
+  //     return
 
-    updateCardsVisibility({ ref: cardsVisibilityRef, progress })
+  //   updateCardsVisibility({ ref: cardsVisibilityRef, progress })
 
-    const isBoosterOverCardsTimeline = progress >= 0.16 && progress <= 0.18
+  //   const isBoosterOverCardsTimeline = progress >= 0.16 && progress <= 0.18
 
-    const indleStrength = isBoosterOverCardsTimeline ? 0 : 1
-    updateIdleAnimaation({ ref: cardsIdleRef, clock, strength: indleStrength })
+  //   const indleStrength = isBoosterOverCardsTimeline ? 0 : 1
+  //   updateIdleAnimaation({ ref: cardsIdleRef, clock, strength: indleStrength })
 
-    const isMythicOverRareStackTimeline = progress >= 0.39 && progress <= 0.59
-    const mouseAnimationStrenght =
-      isBoosterOverCardsTimeline || isMythicOverRareStackTimeline ? 0 : 1
+  //   const isMythicOverRareStackTimeline = progress >= 0.39 && progress <= 0.59
+  //   const mouseAnimationStrenght =
+  //     isBoosterOverCardsTimeline || isMythicOverRareStackTimeline ? 0 : 1
 
-    updateMouseAnimation({
-      ref: mythicCardRef,
-      pointer,
-      strength: mouseAnimationStrenght
-    })
-    updateMouseAnimation({
-      ref: rareAndStackIdleRef,
-      pointer,
-      strength: mouseAnimationStrenght
-    })
+  //   updateMouseAnimation({
+  //     ref: mythicCardRef,
+  //     pointer,
+  //     strength: mouseAnimationStrenght
+  //   })
+  //   updateMouseAnimation({
+  //     ref: rareAndStackIdleRef,
+  //     pointer,
+  //     strength: mouseAnimationStrenght
+  //   })
 
-    updateCardsScrollAnimation({ ref: cardsScrollRef, progress, viewport })
+  //   updateCardsScrollAnimation({ ref: cardsScrollRef, progress, viewport })
 
-    updateMythicCounterMove({ ref: mythicCardRef })
+  //   updateMythicCounterMove({ ref: mythicCardRef })
 
-    updateRareAndStackCounterMove({ ref: rareAndStackCounterRef, progress })
-    updateRareAndStackAnimation({ ref: rareAndStackAnimationRef, progress })
-    updateRareAndStackLastCounterMove({
-      ref: rareAndStackLastCounterRef,
-      progress
-    })
-  })
+  //   updateRareAndStackCounterMove({ ref: rareAndStackCounterRef, progress })
+  //   updateRareAndStackAnimation({ ref: rareAndStackAnimationRef, progress })
+  //   updateRareAndStackLastCounterMove({
+  //     ref: rareAndStackLastCounterRef,
+  //     progress
+  //   })
+  // })
 
   return (
-    <group ref={cardsVisibilityRef}>
-      <group ref={cardsScrollRef} position={[1.7, 0, 0]}>
-        <group ref={cardsMouseRef}>
-          <group ref={cardsIdleRef}>
-            <group ref={mythicCardRef}>
-              <primitive object={mythicCard} scale={20} />
-            </group>
+    <group ref={(node) => setCardsNode(node)} position={[1.2, 0, -0.2]}>
+      <group ref={cardsMouseRef}>
+        <group ref={cardsIdleRef}>
+          <group ref={(node) => setMythicCardNode(node)}>
+            <primitive object={mythicCard} scale={20} />
+          </group>
 
-            <group ref={rareAndStackCounterRef}>
-              <group ref={rareAndStackAnimationRef}>
-                <group ref={rareAndStackLastCounterRef}>
-                  <group ref={rareAndStackIdleRef}>
-                    <primitive
-                      object={rareCard}
-                      scale={20}
-                      position={[0, 0, -0.0005]}
-                    />
-
-                    <Stack cardScene={stackCard} />
-                  </group>
-                </group>
-              </group>
-            </group>
+          <group ref={rareAndStackIdleRef}>
+            <Stack cardScene={stackCard} />
           </group>
         </group>
       </group>

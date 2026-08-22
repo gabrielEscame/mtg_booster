@@ -4,11 +4,18 @@ import { Environment } from '@react-three/drei'
 // import * as THREE from 'three'
 
 import Booster from './Booster'
-// import Cards from './Cards'
+import Cards from './Cards'
 
 import type { SetGroup } from '../types'
 
-const Scene = ({ setBoosterNode }: { setBoosterNode: SetGroup }) => {
+interface SceneProps {
+  setBoosterNode: SetGroup
+  setMythicCardNode: SetGroup
+  setRareStackNode: SetGroup
+  setCardsNode: SetGroup
+}
+
+const Scene = ({ sceneProps }: { sceneProps: SceneProps }) => {
   // const [scrollProgress, setScrollProgress] = useState(0)
 
   // useEffect(() => {
@@ -30,6 +37,14 @@ const Scene = ({ setBoosterNode }: { setBoosterNode: SetGroup }) => {
   //   }
   // }, [])
 
+  const { setBoosterNode, setCardsNode, setMythicCardNode, setRareStackNode } = sceneProps
+
+  const cardsProps = {
+    setMythicCardNode,
+    setRareStackNode,
+    setCardsNode
+  }
+
   return (
     <div className="fixed inset-0 z-20">
       <Canvas
@@ -44,7 +59,7 @@ const Scene = ({ setBoosterNode }: { setBoosterNode: SetGroup }) => {
 
         <Booster setBoosterNode={setBoosterNode} />
 
-        {/* <Cards progress={scrollProgress} /> */}
+        <Cards cardsProps={cardsProps} />
 
         <Environment preset="studio" environmentIntensity={0.35} />
       </Canvas>
