@@ -1,32 +1,34 @@
 import { Canvas } from '@react-three/fiber'
 import { Environment } from '@react-three/drei'
-import { useEffect, useState, type RefObject } from 'react'
-import * as THREE from 'three'
+// import { useEffect, useState } from 'react'
+// import * as THREE from 'three'
 
 import Booster from './Booster'
-import Cards from './Cards'
+// import Cards from './Cards'
 
-const Scene = ({sectionRef} : {sectionRef: RefObject<HTMLDivElement | null>}) => {
-  const [scrollProgress, setScrollProgress] = useState(0)
+import type { SetGroup } from '../types'
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const animationHeight = window.innerHeight * 3
-      const progress = THREE.MathUtils.clamp(
-        window.scrollY / animationHeight,
-        0,
-        1
-      )
+const Scene = ({ setBoosterNode }: { setBoosterNode: SetGroup }) => {
+  // const [scrollProgress, setScrollProgress] = useState(0)
 
-      setScrollProgress(progress)
-    }
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     const animationHeight = window.innerHeight * 3
+  //     const progress = THREE.MathUtils.clamp(
+  //       window.scrollY / animationHeight,
+  //       0,
+  //       1
+  //     )
 
-    window.addEventListener('scroll', handleScroll)
+  //     setScrollProgress(progress)
+  //   }
 
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-    }
-  }, [])
+  //   window.addEventListener('scroll', handleScroll)
+
+  //   return () => {
+  //     window.removeEventListener('scroll', handleScroll)
+  //   }
+  // }, [])
 
   return (
     <div className="fixed inset-0 z-20">
@@ -40,7 +42,7 @@ const Scene = ({sectionRef} : {sectionRef: RefObject<HTMLDivElement | null>}) =>
 
         <directionalLight position={[3, 4, 5]} intensity={0.4} />
 
-        <Booster sectionRef={sectionRef}/>
+        <Booster setBoosterNode={setBoosterNode} />
 
         {/* <Cards progress={scrollProgress} /> */}
 

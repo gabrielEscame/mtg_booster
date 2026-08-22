@@ -6,54 +6,30 @@ import MythicSection from './components/MythicSection'
 import RareSection from './components/RareSection'
 import CardsSection from './components/CardsSection'
 
-import { useEffect, useRef } from 'react'
+import { useRef, useState } from 'react'
+import useHeroTimeline from './three/hooks/useHeroTimeLine'
 
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
-
-gsap.registerPlugin(ScrollTrigger, ScrollToPlugin)
+import { type Group } from 'three'
 
 export default function App() {
   const cardsGroupRef = useRef<HTMLDivElement | null>(null)
-  const sectionRef = useRef<HTMLDivElement | null>(null)
+  const animationContainerRef = useRef<HTMLDivElement | null>(null)
   const mythicSectionRef = useRef<HTMLElement | null>(null)
 
-  useEffect(() => {
-    if (!sectionRef.current || !mythicSectionRef.current) return
-
-    const tl = gsap.timeline({ paused: true })
-
-    tl.to(window, {
-      duration: 1.2,
-      scrollTo: {
-        y: mythicSectionRef.current,
-        autoKill: false
-      },
-      ease: 'power2.inOut'
-    })
-
-    const trigger = ScrollTrigger.create({
-      trigger: sectionRef.current,
-      start: '10% top',
-      onEnter: () => {
-        console.log('PLAY CARAIO')
-        tl.restart()
-      }
-    })
-
-    return () => {
-      trigger.kill()
-      tl.kill()
-    }
-  }, [window, sectionRef, mythicSectionRef])
+  const [boosterNode, setBoosterNode] = useState<Group | null>(null)
+  
+  useHeroTimeline({
+    animationContainerRef,
+    mythicSectionRef,
+    boosterNode
+  })
 
   return (
     <main className="app">
-      <div className="relative" ref={sectionRef}>
+      <div className="relative" ref={animationContainerRef}>
         {/* 3D scene */}
 
-        <Scene sectionRef={sectionRef} />
+        <Scene setBoosterNode={setBoosterNode} />
 
         {/* Sections */}
         <Hero />
