@@ -7,7 +7,7 @@ import RareSection from './components/RareSection'
 import CardsSection from './components/CardsSection'
 
 import { useRef, useState } from 'react'
-import useHeroTimeline from './three/hooks/useHeroTimeLine'
+import useHeroTimeline from './hooks/useHeroTimeLine'
 
 import { type Group } from 'three'
 

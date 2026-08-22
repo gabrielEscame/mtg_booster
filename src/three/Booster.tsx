@@ -4,8 +4,8 @@ import * as THREE from 'three'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-import useMouseAnimation from './hooks/useMouseAnimation'
-import useIdleAnimation from './hooks/useIdleAnimation'
+import useMouseAnimation from '../hooks/useMouseAnimation'
+import useIdleAnimation from '../hooks/useIdleAnimation'
 import type { SetGroup } from '../types'
 
 gsap.registerPlugin(ScrollTrigger)
