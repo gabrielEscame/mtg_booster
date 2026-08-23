@@ -8,7 +8,7 @@ import CardsSection from './components/CardsSection'
 
 import { useRef, useState } from 'react'
 import useHeroTimeline from './hooks/useHeroTimeLine'
-
+import useMythicSectionTimeline from './hooks/useMythicSectionTimeline'
 import { type Group } from 'three'
 
 export default function App() {
@@ -18,7 +18,7 @@ export default function App() {
 
   const [boosterNode, setBoosterNode] = useState<Group | null>(null)
   const [cardsNode, setCardsNode] = useState<Group | null>(null)
-  const [, setMythicCardNode] = useState<Group | null>(null)
+  const [mythicCardNode, setMythicCardNode] = useState<Group | null>(null)
   const [, setRareStackNode] = useState<Group | null>(null)
 
   const sceneProps = {
@@ -34,6 +34,8 @@ export default function App() {
     boosterNode,
     cardsNode
   })
+
+  useMythicSectionTimeline({ animationContainerRef, mythicCardNode })
 
   return (
     <main className="app">

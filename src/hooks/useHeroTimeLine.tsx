@@ -4,14 +4,13 @@ import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin)
 
-import { useEffect, type RefObject } from 'react'
+import { useEffect } from 'react'
 import type { Group } from 'three'
 import animateSnapToSection from '../animation/animateSnapToSection'
 import animateBooster from '../animation/animateBooster'
 import animateCards from '../animation/animateCards'
 
-type refElement = RefObject<HTMLElement | null>
-type refDiv = RefObject<HTMLDivElement | null>
+import type { refDiv, refElement } from '../types'
 
 export default function useHeroTimeline({
   animationContainerRef,
@@ -40,12 +39,9 @@ export default function useHeroTimeline({
       }
     })
 
-    // slow for testing
-    // tl.timeScale(0.5)
-
     animateSnapToSection({ tl, node: mythicNode })
     animateBooster({ tl, node: boosterNode })
-    animateCards({tl, node: cardsNode})
+    animateCards({ tl, node: cardsNode })
 
     window.addEventListener('keydown', (event) => {
       if (event.code === 'ArrowRight') {
