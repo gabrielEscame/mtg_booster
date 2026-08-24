@@ -35,12 +35,6 @@ export default function useHeroTimeline({
     animateBooster({ tl, node: boosterNode })
     animateCards({ tl, node: cardsNode })
 
-    window.addEventListener('keydown', (event) => {
-      if (event.code === 'ArrowRight') {
-        tl.restart()
-      }
-    })
-
     const trigger = ScrollTrigger.create({
       trigger: animationContainerNode,
       start: '6% top',

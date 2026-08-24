@@ -6,6 +6,8 @@ import { useEffect } from 'react'
 import type { refDiv, refElement } from '../types'
 import type { Group } from 'three'
 import animateSnapToSection from '../animation/animateSnapToSection'
+import animateRareStack from '../animation/animateRareStack'
+import animateCounterMovement from '../animation/animateCounterMovement'
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin)
 
@@ -35,14 +37,20 @@ export default function useMythicSectionTimeline({
     const tl = gsap.timeline({ paused: true })
 
     animateSnapToSection({ tl, node: rareSectionNode })
+    animateRareStack({ tl, node: rareStackNode })
 
-    //Counter movement trigger
-    ScrollTrigger.create({
-      trigger: animationContainerRef.current,
+    animateCounterMovement({
       start: '33.3% top',
-      onUpdate: (self) => {
-        gsap.set(mythicCardNode.position, { y: self.progress * 6 })
-      }
+      strenght: 6,
+      containerNode: animationContainerRef,
+      node: mythicCardNode
+    })
+
+    animateCounterMovement({
+      start: '66.6% top',
+      strenght: 3,
+      containerNode: animationContainerRef,
+      node: rareStackNode
     })
 
     const trigger = ScrollTrigger.create({
