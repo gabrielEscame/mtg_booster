@@ -13,11 +13,13 @@ gsap.registerPlugin(ScrollTrigger, ScrollToPlugin)
 
 export default function useMythicSectionTimeline({
   animationContainerRef,
+  mythicSectionRef,
   rareSectionRef,
   mythicCardNode,
   rareStackNode
 }: {
   animationContainerRef: refDiv
+  mythicSectionRef: refElement
   rareSectionRef: refElement
   mythicCardNode: Group | null
   rareStackNode: Group | null
@@ -25,19 +27,16 @@ export default function useMythicSectionTimeline({
   useEffect(() => {
     const aninmationContainerNode = animationContainerRef?.current
     const rareSectionNode = rareSectionRef?.current
+    const mythicSectionNode = mythicSectionRef?.current
 
     if (
       !aninmationContainerNode ||
+      !mythicSectionNode ||
       !rareSectionNode ||
       !mythicCardNode ||
       !rareStackNode
     )
       return
-
-    const tl = gsap.timeline({ paused: true })
-
-    animateSnapToSection({ tl, node: rareSectionNode })
-    animateRareStack({ tl, node: rareStackNode })
 
     animateCounterMovement({
       start: '33.3% top',
@@ -53,17 +52,44 @@ export default function useMythicSectionTimeline({
       node: rareStackNode
     })
 
-    const trigger = ScrollTrigger.create({
+    const tlDownward = gsap.timeline({ paused: true })
+
+    animateSnapToSection({ tl: tlDownward, node: rareSectionNode })
+    animateRareStack.downward({ tl: tlDownward, node: rareStackNode })
+
+    const triggerDownward = ScrollTrigger.create({
       trigger: animationContainerRef.current,
       start: '39.3% top',
-      onUpdate: () => {
-        tl.play()
+      onEnter: () => {
+        tlDownward.restart()
+      },
+    })
+
+    const tlUpward = gsap.timeline({ paused: true })
+
+    animateSnapToSection({ tl: tlUpward, node: mythicSectionNode })
+    animateRareStack.upward({ tl: tlUpward, node: rareStackNode })
+
+
+    const triggerUpward = ScrollTrigger.create({
+      trigger: animationContainerRef.current,
+      start: '94% bottom',
+      onLeaveBack: () => {
+        tlUpward.restart()
       }
     })
 
     return () => {
-      trigger.kill()
-      tl.kill()
+      triggerDownward.kill()
+      triggerUpward.kill()
+      tlDownward.kill()
+      tlUpward.kill()
     }
-  }, [animationContainerRef, rareSectionRef, mythicCardNode, rareStackNode])
+  }, [
+    animationContainerRef,
+    mythicSectionRef,
+    rareSectionRef,
+    mythicCardNode,
+    rareStackNode
+  ])
 }
