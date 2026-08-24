@@ -31,14 +31,6 @@ export default function useHeroTimeline({
       return
     const tl = gsap.timeline({ paused: true })
 
-    const trigger = ScrollTrigger.create({
-      trigger: animationContainerNode,
-      start: '6% top',
-      onEnter: () => {
-        tl.play()
-      }
-    })
-
     animateSnapToSection({ tl, node: mythicNode })
     animateBooster({ tl, node: boosterNode })
     animateCards({ tl, node: cardsNode })
@@ -46,6 +38,14 @@ export default function useHeroTimeline({
     window.addEventListener('keydown', (event) => {
       if (event.code === 'ArrowRight') {
         tl.restart()
+      }
+    })
+
+    const trigger = ScrollTrigger.create({
+      trigger: animationContainerNode,
+      start: '6% top',
+      onEnter: () => {
+        tl.play()
       }
     })
 

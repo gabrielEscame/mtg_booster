@@ -15,11 +15,12 @@ export default function App() {
   const cardsGroupRef = useRef<HTMLDivElement | null>(null)
   const animationContainerRef = useRef<HTMLDivElement | null>(null)
   const mythicSectionRef = useRef<HTMLElement | null>(null)
+  const rareSectionRef = useRef<HTMLElement | null>(null)
 
   const [boosterNode, setBoosterNode] = useState<Group | null>(null)
   const [cardsNode, setCardsNode] = useState<Group | null>(null)
   const [mythicCardNode, setMythicCardNode] = useState<Group | null>(null)
-  const [, setRareStackNode] = useState<Group | null>(null)
+  const [rareStackNode, setRareStackNode] = useState<Group | null>(null)
 
   const sceneProps = {
     setBoosterNode,
@@ -35,7 +36,12 @@ export default function App() {
     cardsNode
   })
 
-  useMythicSectionTimeline({ animationContainerRef, mythicCardNode })
+  useMythicSectionTimeline({
+    animationContainerRef,
+    rareSectionRef,
+    mythicCardNode,
+    rareStackNode
+  })
 
   return (
     <main className="app">
@@ -47,7 +53,7 @@ export default function App() {
         {/* Sections */}
         <Hero />
         <MythicSection ref={mythicSectionRef} />
-        <RareSection />
+        <RareSection ref={rareSectionRef}/>
       </div>
 
       <div className="relative h-[200vh]" ref={cardsGroupRef}>

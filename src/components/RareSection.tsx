@@ -1,8 +1,12 @@
 import FadeUp from './animation/FadeUp'
+import type { RefObject } from 'react'
 
-const RareSection = () => {
+const RareSection = ({ ref }: { ref: RefObject<HTMLElement | null> }) => {
   return (
-    <section className="relative h-screen w-full bg-[url('/images/rare_bg.webp')] bg-no-repeat bg-[length:auto_100%] bg-left lg:bg-[length:205%]">
+    <section
+      ref={ref}
+      className="relative h-screen w-full bg-[url('/images/rare_bg.webp')] bg-no-repeat bg-[length:auto_100%] bg-left lg:bg-[length:205%]"
+    >
       {/* Background gradients */}
       <div className="absolute inset-0 z-10 bg-[radial-gradient(circle_at_center,_rgba(0,0,0,0.7)_0%,_rgba(0,0,0,0)_70%)]" />
 
