@@ -65,11 +65,16 @@ const CARDS_OFFSETS = [
     x: -0.00019641,
     y: -0.00000519,
     rotationZ: -0.068448
+  },
+  {
+    x: -0.00019641,
+    y: -0.00000519,
+    rotationZ: -0.068448
   }
 ]
 
 const Stack = ({ cardScene }: { cardScene: Group<Object3DEventMap> }) => {
-  const cardSpacing = 0.0005
+  const cardSpacing = 0.001
   const stackStart = 0.001
 
   return (
