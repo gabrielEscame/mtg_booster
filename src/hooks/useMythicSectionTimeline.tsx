@@ -17,14 +17,14 @@ export default function useMythicSectionTimeline({
 }) {
   useEffect(() => {
     const aninmationContainerNode = animationContainerRef?.current
-    console.log({ mythicCardNode })
+    
     if (!aninmationContainerNode || !mythicCardNode) return
 
     ScrollTrigger.create({
       trigger: animationContainerRef.current,
       start: '33.3% top',
-      onUpdate: self => {
-        gsap.set(mythicCardNode.position, {y: self.progress * 6})
+      onUpdate: (self) => {
+        gsap.set(mythicCardNode.position, { y: self.progress * 6 })
       }
     })
   }, [animationContainerRef, mythicCardNode])

@@ -7,8 +7,10 @@ export default function animateCards({
   tl: gsap.core.Timeline
   node: Group
 }) {
-  let { visible, position, rotation } = node
-  visible = false
+  node.visible = false
+  
+  const { position, rotation } = node
+
 
   //Rise
   tl.to(
