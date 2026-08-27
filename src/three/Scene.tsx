@@ -55,13 +55,13 @@ const Scene = ({ sceneProps }: { sceneProps: SceneProps }) => {
       >
         <ambientLight intensity={0.03} />
 
-        <directionalLight position={[3, 4, 5]} intensity={0.4} />
+        <directionalLight position={[3, 4, 5]} intensity={0.4} rotateY={Math.PI / 2} />
 
         <Booster setBoosterNode={setBoosterNode} />
 
         <Cards cardsProps={cardsProps} />
 
-        <Environment preset="studio" environmentIntensity={0.35} />
+        <Environment preset="city" environmentIntensity={1} />
       </Canvas>
     </div>
   )
