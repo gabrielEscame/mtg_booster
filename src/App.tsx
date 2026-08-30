@@ -14,6 +14,7 @@ import { type Group } from 'three'
 export default function App() {
   const cardsGroupRef = useRef<HTMLDivElement | null>(null)
   const animationContainerRef = useRef<HTMLDivElement | null>(null)
+  const HeroSectionRef = useRef<HTMLElement | null>(null)
   const mythicSectionRef = useRef<HTMLElement | null>(null)
   const rareSectionRef = useRef<HTMLElement | null>(null)
 
@@ -31,6 +32,7 @@ export default function App() {
 
   useHeroTimeline({
     animationContainerRef,
+    HeroSectionRef,
     mythicSectionRef,
     boosterNode,
     cardsNode
@@ -52,7 +54,7 @@ export default function App() {
         <Scene sceneProps={sceneProps} />
 
         {/* Sections */}
-        <Hero />
+        <Hero ref={HeroSectionRef}/>
         <MythicSection ref={mythicSectionRef} />
         <RareSection ref={rareSectionRef}/>
       </div>

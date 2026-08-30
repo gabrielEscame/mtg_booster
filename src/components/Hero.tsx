@@ -1,12 +1,10 @@
 import { motion, useScroll, useTransform, easeIn } from 'motion/react'
-import { useRef } from 'react'
+import type { RefObject } from 'react'
 import FadeUp from './animation/FadeUp'
 
-const Hero = () => {
-  const heroRef = useRef<HTMLElement | null>(null)
-
+const Hero = ({ ref }: { ref: RefObject<HTMLElement | null> }) => {
   const { scrollYProgress } = useScroll({
-    target: heroRef,
+    target: ref,
     offset: ['start start', 'end start']
   })
 
@@ -28,7 +26,7 @@ const Hero = () => {
 
   return (
     <section
-      ref={heroRef}
+      ref={ref}
       className="relative h-screen w-full bg-[url('/images/hero_bg.jpg')] bg-no-repeat bg-[length:auto_100%] bg-left lg:bg-[length:204%]"
     >
       <div className="absolute inset-0 z-10 bg-[radial-gradient(circle_at_center,_rgba(102,102,102,0)_0%,_rgba(0,0,0,0.7)_70%)]" />

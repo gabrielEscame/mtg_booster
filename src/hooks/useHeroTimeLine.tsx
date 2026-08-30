@@ -4,7 +4,7 @@ import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin)
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import type { Group } from 'three'
 import animateSnapToSection from '../animation/animateSnapToSection'
 import animateBooster from '../animation/animateBooster'
@@ -14,11 +14,13 @@ import type { refDiv, refElement } from '../types'
 
 export default function useHeroTimeline({
   animationContainerRef,
+  HeroSectionRef,
   mythicSectionRef,
   boosterNode,
   cardsNode
 }: {
   animationContainerRef: refDiv
+  HeroSectionRef: refElement
   mythicSectionRef: refElement
   boosterNode: Group | null
   cardsNode: Group | null
@@ -26,26 +28,66 @@ export default function useHeroTimeline({
   useEffect(() => {
     const animationContainerNode = animationContainerRef?.current
     const mythicNode = mythicSectionRef?.current
+    const heroNode = HeroSectionRef?.current
 
-    if (!animationContainerNode || !mythicNode || !boosterNode || !cardsNode)
+    if (
+      !animationContainerNode ||
+      !mythicNode ||
+      !heroNode ||
+      !boosterNode ||
+      !cardsNode
+    )
       return
-    const tl = gsap.timeline({ paused: true })
+    const tlIntro = gsap.timeline({ paused: true })
 
-    animateSnapToSection({ tl, node: mythicNode })
-    animateBooster({ tl, node: boosterNode })
-    animateCards({ tl, node: cardsNode })
+    animateSnapToSection({ tl: tlIntro, node: mythicNode })
+    animateBooster({ tl: tlIntro, node: boosterNode })
+    animateCards.intro({ tl: tlIntro, node: cardsNode })
 
-    const trigger = ScrollTrigger.create({
+    const tlDownward = gsap.timeline({ paused: true })
+    animateSnapToSection({ tl: tlDownward, node: mythicNode })
+    animateCards.downwards({ tl: tlDownward, node: cardsNode })
+
+    let hasPlayedIntro = false
+
+    const triggerDownward = ScrollTrigger.create({
       trigger: animationContainerNode,
       start: '6% top',
       onEnter: () => {
-        tl.play()
+        if (!hasPlayedIntro) {
+          console.log(' INTRO ')
+          tlIntro.play()
+          hasPlayedIntro = true
+
+          return
+        }
+
+        tlDownward.restart()
       }
     })
 
+    const tlUpward = gsap.timeline({ paused: true })
+    animateSnapToSection({ tl: tlUpward, node: heroNode })
+    animateCards.upwards({ tl: tlUpward, node: cardsNode })
+
+    const triggerUpward = ScrollTrigger.create({
+      trigger: animationContainerNode,
+      start: '26.3% top',
+      onLeaveBack: () => tlUpward.restart()
+    })
+
     return () => {
-      trigger.kill()
-      tl.kill()
+      triggerDownward.kill()
+      tlIntro.kill()
+      tlDownward.kill()
+      triggerUpward.kill()
     }
-  }, [window, animationContainerRef, mythicSectionRef, boosterNode, cardsNode])
+  }, [
+    window,
+    animationContainerRef,
+    HeroSectionRef,
+    mythicSectionRef,
+    boosterNode,
+    cardsNode
+  ])
 }
