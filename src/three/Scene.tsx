@@ -1,7 +1,5 @@
 import { Canvas } from '@react-three/fiber'
 import { Environment } from '@react-three/drei'
-// import { useEffect, useState } from 'react'
-// import * as THREE from 'three'
 
 import Booster from './Booster'
 import Cards from './Cards'
@@ -16,26 +14,6 @@ interface SceneProps {
 }
 
 const Scene = ({ sceneProps }: { sceneProps: SceneProps }) => {
-  // const [scrollProgress, setScrollProgress] = useState(0)
-
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     const animationHeight = window.innerHeight * 3
-  //     const progress = THREE.MathUtils.clamp(
-  //       window.scrollY / animationHeight,
-  //       0,
-  //       1
-  //     )
-
-  //     setScrollProgress(progress)
-  //   }
-
-  //   window.addEventListener('scroll', handleScroll)
-
-  //   return () => {
-  //     window.removeEventListener('scroll', handleScroll)
-  //   }
-  // }, [])
 
   const { setBoosterNode, setCardsNode, setMythicCardNode, setRareStackNode } = sceneProps
 
@@ -61,7 +39,7 @@ const Scene = ({ sceneProps }: { sceneProps: SceneProps }) => {
 
         <Cards cardsProps={cardsProps} />
 
-        <Environment preset="city" environmentIntensity={1} />
+        <Environment preset="city" environmentIntensity={1.2} />
       </Canvas>
     </div>
   )

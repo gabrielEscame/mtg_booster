@@ -4,7 +4,7 @@ import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin)
 
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import type { Group } from 'three'
 import animateSnapToSection from '../animation/animateSnapToSection'
 import animateBooster from '../animation/animateBooster'
