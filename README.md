@@ -1,75 +1,46 @@
-# React + TypeScript + Vite
+# MTG 3D Booster Experience
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A work-in-progress interactive web experience inspired by Magic: The Gathering.
 
-Currently, two official plugins are available:
+This is a personal project created to bring together two things I enjoy: **3D/creative work and frontend development**. The goal is to explore how movement, 3D elements, shaders, lighting and interaction can be used to create a more expressive web experience.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+The project is also a way for me to deepen my knowledge of **Three.js, React Three Fiber and GSAP**, while experimenting with creative frontend techniques.
 
-## React Compiler
+## Current state
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+The project is still a work in progress and hasn't been deployed yet.
 
-## Expanding the ESLint configuration
+Here's a snapshot of the current experience:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+![Current state](./docs/wip.gif)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+> The experience is actively being developed, so visuals and interactions are subject to change.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Tech & tools
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- **React + TypeScript** — application and component architecture
+- **Three.js** — 3D rendering and WebGL
+- **React Three Fiber** — integrating Three.js with React
+- **Drei** — Three.js/R3F helpers and utilities
+- **GSAP** — animations and scroll-driven transitions
+- **Blender** — modeling and preparing the 3D assets
+- **Photoshop** — textures, masks and material maps
+- **GLSL** — custom shader logic and effects
 
-```
+### Custom 3D & shader work
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+The 3D assets are modeled and prepared in Blender and then imported into the web experience through GLTF/GLB.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+I'm also experimenting with custom shaders in Three.js. For example, the foil effect on the cards is implemented directly in code using a texture mask combined with view-angle calculations to create an animated holographic/rainbow effect.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Goals
 
-```
+- Explore creative applications of Three.js on the web
+- Improve my understanding of shaders and WebGL
+- Experiment with 3D lighting and VFX
+- Create more expressive and interactive frontend experiences
+- Combine traditional frontend development with 3D and motion design
+
+## Status
+
+**Work in progress**
