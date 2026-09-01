@@ -12,7 +12,10 @@ The project is still a work in progress and hasn't been deployed yet.
 
 Here's a snapshot of the current experience:
 
-![Current state](./docs/wip.gif)
+
+https://github.com/user-attachments/assets/2b2ff6c0-c9ba-48be-b54e-396802b4e3ce
+
+
 
 > The experience is actively being developed, so visuals and interactions are subject to change.
 
