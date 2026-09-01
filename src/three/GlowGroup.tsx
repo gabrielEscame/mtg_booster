@@ -60,7 +60,7 @@ function Glow({
 
 export default function GlowGroup() {
   return (
-    <group position={[0, 0, -0.1]}>
+    <group position={[0, 0, -0.4]}>
       <Glow
         rotation={[0, 0, Math.PI]}
         position={[0, 1.6, 0]}

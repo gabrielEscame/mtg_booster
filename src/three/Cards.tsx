@@ -133,7 +133,7 @@ const Cards = ({ cardsProps }: { cardsProps: CardsProps }) => {
   }, [mythicCard, foilMask])
 
   return (
-    <group ref={(node) => setCardsNode(node)} position={[1.2, 0, -0.2]}>
+    <group ref={(node) => setCardsNode(node)} position={[1.5, 0, -0.2]}>
       <group ref={cardsMouseRef}>
         <group ref={cardsIdleRef}>
           <group ref={(node) => setMythicCardNode(node)}>

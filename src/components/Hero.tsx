@@ -44,25 +44,29 @@ const Hero = ({ ref }: { ref: RefObject<HTMLElement | null> }) => {
       />
 
       {/* Hero content */}
-      <FadeUp className="absolute top-[55px] left-[67px] z-30 flex w-[460px] flex-col justify-center">
+      <FadeUp className="absolute top-[55px] left-[67px] z-30 flex flex-col justify-center">
         <img
           src="/images/mtg_logo.webp"
           alt="Magic: The Gathering"
           className="h-auto w-[460px]"
         />
 
-        <p className="text-caption text-[0.7rem]">AVAILABLE AUGUST 14</p>
+        <div className="mt-[32px] ml-[40px] w-[460px]">
+          
 
-        <h1 className="text-title mt-[14px] w-fit">
+        <p className="text-caption text-[0.75rem]">AVAILABLE AUGUST 14</p>
+
+        <h1 className="text-title mt-[16px] w-fit">
           UNSEAL <br /> THE ADVENTURE
         </h1>
 
-        <p className="text-body mt-[22px]">
+        <p className="text-body mt-[24px]">
           Join Bilbo’s journey through Middle-earth, with heroes to discover,
           treasures to uncover, and unexpected adventures waiting in every pack.
           Open your boosters, reveal the cards within, and see where the road
           takes you.
         </p>
+        </div>
       </FadeUp>
 
       <motion.div

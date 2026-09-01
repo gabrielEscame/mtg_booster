@@ -17,7 +17,7 @@ const RareSection = ({ ref }: { ref: RefObject<HTMLElement | null> }) => {
             RADAGAST <br /> OF RHOSGOBEL
           </h1>
 
-          <p className="text-body mt-[22px] max-w-[470px]">
+          <p className="text-body mt-[24px] max-w-[470px]">
             No road through Middle-earth is meant to be traveled alone. From the
             wild paths of Rhosgobel comes Radagast, a steadfast friend whose
             wisdom calls new companions to your side when the journey needs them
@@ -25,7 +25,7 @@ const RareSection = ({ ref }: { ref: RefObject<HTMLElement | null> }) => {
             becomes one worth traveling.
           </p>
 
-          <p className="text-explanation text-[0.8rem] mt-[22px] max-w-[470px]">
+          <p className="text-explanation text-[0.8rem] mt-[16px] max-w-[470px]">
             RARE — A remarkable companion, waiting beyond the common paths of a
             Play Booster. Rare cards appear in the booster’s rare-or-mythic
             slot, making every pack a chance to discover a powerful new ally for

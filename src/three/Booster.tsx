@@ -7,6 +7,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import useMouseAnimation from '../hooks/useMouseAnimation'
 import useIdleAnimation from '../hooks/useIdleAnimation'
 import type { SetGroup } from '../types'
+import GlowGroup from './GlowGroup'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -19,9 +20,10 @@ function Booster({ setBoosterNode }: { setBoosterNode: SetGroup }) {
   useIdleAnimation(idleRef)
 
   return (
-    <group ref={(node) => setBoosterNode(node)} position={[1.2, 0, 0]}>
+    <group ref={(node) => setBoosterNode(node)} position={[1.5, 0, 0]}>
       <group ref={mouseRef}>
         <group ref={idleRef}>
+          {/* <GlowGroup/> */}
           <primitive scale={20} object={scene} />
         </group>
       </group>
