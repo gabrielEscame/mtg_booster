@@ -21,11 +21,17 @@ const Cards = ({ cardsProps }: { cardsProps: CardsProps }) => {
   const { scene: mythicCard } = useGLTF('/models/smaug_card.glb')
   const { scene: stackCard } = useGLTF('/models/rare_card.glb')
 
-  const cardsMouseRef = useRef<THREE.Group | null>(null)
-  const cardsIdleRef = useRef<THREE.Group | null>(null)
+  const cardsMouseRefMythic = useRef<THREE.Group | null>(null)
+  const cardsIdleRefMythic = useRef<THREE.Group | null>(null)
 
-  useMouseAnimation(cardsMouseRef)
-  useIdleAnimation(cardsIdleRef)
+  const cardsMouseRefRare = useRef<THREE.Group | null>(null)
+  const cardsIdleRefRare = useRef<THREE.Group | null>(null)
+
+  useMouseAnimation(cardsMouseRefMythic)
+  useIdleAnimation(cardsIdleRefMythic)
+
+  useMouseAnimation(cardsMouseRefRare)
+  useIdleAnimation(cardsIdleRefRare)
 
   const foilMask = useTexture('/textures/smaug_card_foil_mask.jpg')
   foilMask.colorSpace = THREE.NoColorSpace
@@ -134,13 +140,17 @@ const Cards = ({ cardsProps }: { cardsProps: CardsProps }) => {
 
   return (
     <group ref={(node) => setCardsNode(node)} position={[1.5, 0, -0.2]}>
-      <group ref={cardsMouseRef}>
-        <group ref={cardsIdleRef}>
-          <group ref={(node) => setMythicCardNode(node)}>
+      <group ref={(node) => setMythicCardNode(node)}>
+        <group ref={cardsMouseRefMythic}>
+          <group ref={cardsIdleRefMythic}>
             <primitive object={mythicCard} scale={20} />
           </group>
+        </group>
+      </group>
 
-          <group ref={(node) => setRareStackNode(node)}>
+      <group ref={(node) => setRareStackNode(node)}>
+        <group ref={cardsMouseRefRare}>
+          <group ref={cardsIdleRefRare}>
             <Stack cardScene={stackCard} />
           </group>
         </group>

@@ -11,7 +11,7 @@ const RareSection = ({ ref }: { ref: RefObject<HTMLElement | null> }) => {
       <div className="absolute inset-0 z-10 bg-[radial-gradient(circle_at_center,_rgba(0,0,0,0.7)_0%,_rgba(0,0,0,0)_70%)]" />
 
       {/* Mythic content */}
-      <FadeUp className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 z-20 flex flex-col items-end w-[70%]">
+      <FadeUp className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 z-20 flex flex-col items-end w-[75%]">
         <div className="w-content flex flex-col justify-center">
           <h1 className="text-title max-w-[470px]">
             RADAGAST <br /> OF RHOSGOBEL
